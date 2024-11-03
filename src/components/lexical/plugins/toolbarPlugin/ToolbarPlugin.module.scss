@@ -1,0 +1,79 @@
+.toolbar {
+  background-color: transparent;
+  display: flex;
+  margin-bottom: 1px;
+  vertical-align: middle;
+  top: 0;
+  z-index: 2;
+  gap: 1rem;
+
+  .item {
+    width: 3.25rem;
+    height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ACHROMATIC-OPACITY-8);
+    border-radius: 1rem;
+    cursor: pointer;
+    box-shadow: 0px 12px 8px -6px var(--ACHROMATIC-OPACITY-4);
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+
+    &:hover {
+      background-color: var(--ACHROMATIC-OPACITY-4);
+      cursor: pointer;
+    }
+
+    .image {
+      width: 18px;
+      height: 18px;
+      fill: var(--ACHROMATIC-REVERSE);
+    }
+
+    .word {
+      width: 21px;
+      height: 21px;
+      fill: var(--ACHROMATIC-REVERSE);
+    }
+  }
+
+  .image-item {
+    animation-name: float;
+    animation-timing-function: ease-in;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  .word-item {
+    animation-name: float-reverse;
+    animation-timing-function: ease-in;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes float-reverse {
+  0% {
+    transform: translateY(2px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(2px);
+  }
+}

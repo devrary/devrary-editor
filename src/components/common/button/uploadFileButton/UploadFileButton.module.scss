@@ -1,0 +1,37 @@
+.button-container {
+  height: 3.25rem;
+  width: 3.25rem;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.6rem;
+  background-color: var(--ACHROMATIC-OPACITY-7);
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+
+  .upload {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ACHROMATIC-REVERSE);
+
+    &.show {
+      display: none;
+    }
+  }
+
+  .close {
+    width: 20px;
+    height: 20px;
+    fill: var(--ACHROMATIC-REVERSE);
+
+    &.show {
+      display: none;
+    }
+  }
+
+  &:hover {
+    background-color: var(--BACKGROUND-1);
+  }
+}

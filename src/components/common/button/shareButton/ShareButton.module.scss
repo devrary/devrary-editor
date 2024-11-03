@@ -1,0 +1,20 @@
+.button-container {
+  border: 1px solid var(--ACHROMATIC-OPACITY-8);
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: var(--ACHROMATIC-REVERSE);
+  }
+
+  &:hover {
+    background-color: var(--ACHROMATIC-OPACITY-4);
+    cursor: pointer;
+  }
+}

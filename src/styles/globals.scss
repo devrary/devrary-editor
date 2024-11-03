@@ -1,0 +1,100 @@
+@use "@/styles/_theme.scss" as *;
+@import "@/styles/_color.scss";
+@import "@/styles/_font.scss";
+@import "@/styles/_mixin.scss";
+
+:root {
+  font-size: 12px;
+  --FONT-DM-MONO-LIGHT: "DM-Mono-Light";
+  --FONT-DM-MONO-REGULAR: "DM-Mono-Regular";
+  --FONT-DM-MONO-BOLD: "DM-Mono-Medium";
+  --FONT-RUBIC-MONO-REGULAR: "Rubic-Mono-Regular";
+
+  --DARK: #{$DARK};
+
+  --DARK-OPACITY-1: #{$DARK-OPACITY-1};
+  --DARK-OPACITY-2: #{$DARK-OPACITY-2};
+  --DARK-OPACITY-3: #{$DARK-OPACITY-3};
+  --DARK-OPACITY-4: #{$DARK-OPACITY-4};
+  --DARK-OPACITY-5: #{$DARK-OPACITY-5};
+  --DARK-OPACITY-6: #{$DARK-OPACITY-6};
+  --DARK-OPACITY-7: #{$DARK-OPACITY-7};
+  --DARK-OPACITY-8: #{$DARK-OPACITY-8};
+  --DARK-OPACITY-9: #{$DARK-OPACITY-9};
+
+  --LIGHT: #{$LIGHT};
+
+  --LIGHT-OPACITY-1: #{$LIGHT-OPACITY-1};
+  --LIGHT-OPACITY-2: #{$LIGHT-OPACITY-2};
+  --LIGHT-OPACITY-3: #{$LIGHT-OPACITY-3};
+  --LIGHT-OPACITY-4: #{$LIGHT-OPACITY-4};
+  --LIGHT-OPACITY-5: #{$LIGHT-OPACITY-5};
+  --LIGHT-OPACITY-6: #{$LIGHT-OPACITY-6};
+  --LIGHT-OPACITY-7: #{$LIGHT-OPACITY-7};
+  --LIGHT-OPACITY-8: #{$LIGHT-OPACITY-8};
+  --LIGHT-OPACITY-9: #{$LIGHT-OPACITY-9};
+
+  --BASE-BLUE-1-OPACITY-1: #{$BASE-BLUE-1-OPACITY-1};
+  --BASE-BLUE-1-OPACITY-2: #{$BASE-BLUE-1-OPACITY-2};
+  --BASE-BLUE-1-OPACITY-3: #{$BASE-BLUE-1-OPACITY-3};
+  --BASE-BLUE-1-OPACITY-4: #{$BASE-BLUE-1-OPACITY-4};
+  --BASE-BLUE-1-OPACITY-5: #{$BASE-BLUE-1-OPACITY-5};
+  --BASE-BLUE-1-OPACITY-6: #{$BASE-BLUE-1-OPACITY-6};
+  --BASE-BLUE-1-OPACITY-7: #{$BASE-BLUE-1-OPACITY-7};
+  --BASE-BLUE-1-OPACITY-8: #{$BASE-BLUE-1-OPACITY-8};
+  --BASE-BLUE-1-OPACITY-9: #{$BASE-BLUE-1-OPACITY-9};
+
+  --BORDER-GRAY-1: #{$BORDER-GRAY-1};
+
+  --DARK-GRAY-1: #{$DARK-GRAY-1};
+  --DARK-GRAY-2: #{$DARK-GRAY-2};
+  --DARK-GRAY-3: #{$DARK-GRAY-3};
+  --DARK-GRAY-4: #{$DARK-GRAY-4};
+  --DARK-GRAY-5: #{$DARK-GRAY-5};
+  --BASE-GRAY-1: #{$BASE-GRAY-1};
+  --BASE-GRAY-2: #{$BASE-GRAY-2};
+  --BASE-GRAY-3: #{$BASE-GRAY-3};
+  --LIGHT-GRAY-1: #{$LIGHT-GRAY-1};
+  --LIGHT-GRAY-2: #{$LIGHT-GRAY-2};
+  --BASE-RED-1: #{$BASE-RED-1};
+  --BASE-RED-2: #{$BASE-RED-2};
+  --DARK-RED-1: #{$DARK-RED-1};
+  --DARK-RED-2: #{$DARK-RED-2};
+  --BASE-GREEN-1: #{$BASE-GREEN-1};
+  --BASE-BLUE-1: #{$BASE-BLUE-1};
+  --DARK-BLUE-1: #{$DARK-BLUE-1};
+  --BASE-CREAM-1: #{$BASE-CREAM-1};
+  --BASE-CREAM-2: #{$BASE-CREAM-2};
+  --LIGHT-CREAM-1: #{$LIGHT-CREAM-1};
+  --BASE-YELLOW-1: #{$BASE-YELLOW-1};
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  width: 100vw !important;
+  height: 100vh !important;
+  font-family: var(--FONT-DM-MONO-REGULAR);
+  font-size: 1rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Opera */
+}

@@ -1,0 +1,15 @@
+.placeholder-container {
+  position: absolute;
+  top: 50%;
+  left: calc(3.75rem + 10px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transform: translateY(-50%);
+
+  .placeholder {
+    font-size: 1.2rem;
+    text-align: start;
+    color: var(--BASE-GRAY-2);
+  }
+}

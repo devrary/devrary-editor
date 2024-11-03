@@ -1,0 +1,26 @@
+.button-container {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--ACHROMATIC-OPACITY-3);
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .moon {
+    fill: var(--ACHROMATIC-REVERSE);
+  }
+
+  .sun {
+    stroke: var(--ACHROMATIC-REVERSE);
+  }
+}

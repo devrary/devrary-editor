@@ -1,0 +1,74 @@
+.image-caption-button {
+  display: block;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  width: 30%;
+  padding: 10px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  min-width: 100px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: rgba(60, 132, 244, 0.5);
+  }
+
+  .image-resizer {
+    display: block;
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    background-color: rgb(60, 132, 244);
+    border: 1px solid #fff;
+  }
+
+  .image-resizer-n {
+    top: -6px;
+    left: 48%;
+    cursor: n-resize;
+  }
+
+  .image-resizer-ne {
+    top: -6px;
+    right: -6px;
+    cursor: ne-resize;
+  }
+
+  .image-resizer-e {
+    bottom: 48%;
+    right: -6px;
+    cursor: e-resize;
+  }
+
+  .image-resizer-se {
+    bottom: -2px;
+    right: -6px;
+    cursor: nwse-resize;
+  }
+  .image-resizer-s {
+    bottom: -2px;
+    left: 48%;
+    cursor: s-resize;
+  }
+  .image-resizer-sw {
+    bottom: -2px;
+    left: -6px;
+    cursor: sw-resize;
+  }
+  .image-resizer-w {
+    bottom: 48%;
+    left: -6px;
+    cursor: w-resize;
+  }
+  .image-resizer-nw {
+    top: -6px;
+    left: -6px;
+    cursor: nw-resize;
+  }
+}

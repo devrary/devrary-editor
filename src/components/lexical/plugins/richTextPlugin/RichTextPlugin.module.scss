@@ -1,0 +1,18 @@
+.richtext-container {
+  width: calc(100% - 1.75rem);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transform: translateX(3.75rem);
+  min-height: 3.25rem;
+
+  .richtext {
+    outline: none;
+    width: 100%;
+    position: relative;
+    padding-left: 4px;
+    font-size: 1.2rem;
+    color: var(--ACHROMATIC-REVERSE);
+  }
+}
