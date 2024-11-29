@@ -1,20 +1,14 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $insertNodeToNearestRoot, mergeRegister } from "@lexical/utils";
 import {
+  $getRoot,
   $getSelection,
   $isRangeSelection,
   COMMAND_PRIORITY_EDITOR,
   createCommand,
   LexicalCommand,
 } from "lexical";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   $createPageBreakNode,
@@ -25,6 +19,7 @@ export const INSERT_PAGE_BREAK: LexicalCommand<undefined> = createCommand();
 
 export default function PageBreakPlugin(): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
+  const [sequence, setSequence] = useState<number>(0);
 
   useEffect(() => {
     if (!editor.hasNodes([PageBreakNode])) {
@@ -33,28 +28,59 @@ export default function PageBreakPlugin(): JSX.Element | null {
       );
     }
 
+    editor.registerTextContentListener(() => {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) {
+          return false;
+        }
+        const root = $getRoot();
+        let index = 1;
+        root.getChildren().forEach((node) => {
+          if (
+            node.getType() === "page-break" &&
+            node instanceof PageBreakNode
+          ) {
+            console.log("page-break node");
+            const pgBreak = $createPageBreakNode(index);
+            node.replace(pgBreak);
+            index++;
+          }
+          setSequence(index);
+        });
+      });
+    });
+
     return mergeRegister(
       editor.registerCommand(
         INSERT_PAGE_BREAK,
         () => {
-          const selection = $getSelection();
+          editor.update(() => {
+            const selection = $getSelection();
 
-          if (!$isRangeSelection(selection)) {
-            return false;
-          }
+            if (!$isRangeSelection(selection)) {
+              return false;
+            }
+            const root = $getRoot();
+            let index = 1;
 
-          const focusNode = selection.focus.getNode();
-          if (focusNode !== null) {
-            const pgBreak = $createPageBreakNode();
+            root.getChildren().forEach((node) => {
+              if (
+                node.getType() === "page-break" &&
+                node instanceof PageBreakNode
+              ) {
+                index++;
+              }
+            });
+            const pgBreak = $createPageBreakNode(0);
             $insertNodeToNearestRoot(pgBreak);
-          }
-
+          });
           return true;
         },
         COMMAND_PRIORITY_EDITOR
       )
     );
-  }, [editor]);
+  }, [editor, sequence]);
 
   return null;
 }

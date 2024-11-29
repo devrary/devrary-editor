@@ -1,5 +1,5 @@
 import { HistoryState } from "@lexical/react/LexicalHistoryPlugin";
-import { Context, createContext } from "react";
+import { Context, createContext, Dispatch, SetStateAction } from "react";
 
 type LexicalHistoryContextShape = {
   historyState?: HistoryState;

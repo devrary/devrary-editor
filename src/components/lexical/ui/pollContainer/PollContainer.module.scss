@@ -1,0 +1,33 @@
+.poll-container {
+  border: 1px solid #eee;
+  background-color: #fcfcfc;
+  border-radius: 10px;
+  max-width: 600px;
+  min-width: 400px;
+  cursor: pointer;
+  user-select: none;
+
+  &.focus {
+    outline: 2px solid rgb(60, 132, 244);
+  }
+
+  .poll-inner {
+    margin: 15px;
+    cursor: default;
+
+    .poll-heading {
+      margin-left: 0px;
+      margin-top: 0px;
+      margin-right: 0px;
+      margin-bottom: 15px;
+      color: #444;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .poll-footer {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

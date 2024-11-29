@@ -1,0 +1,144 @@
+.poll-option-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  align-items: center;
+
+  .poll-option-checkbox-wrapper {
+    position: relative;
+    display: flex;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #999;
+    margin-right: 10px;
+    border-radius: 5px;
+
+    .poll-option-checkbox {
+      border: 0px;
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+
+      &:checked {
+        border: 1px solid rgb(61, 135, 245);
+        background-color: rgb(61, 135, 245);
+
+        &::after {
+          content: "";
+          cursor: pointer;
+          border-color: #fff;
+          border-style: solid;
+          position: absolute;
+          display: block;
+          top: 4px;
+          width: 5px;
+          left: 8px;
+          height: 9px;
+          margin: 0;
+          transform: rotate(45deg);
+          border-width: 0 2px 2px 0;
+          pointer-events: none;
+        }
+      }
+    }
+  }
+
+  .poll-option-input-wrapper {
+    display: flex;
+    flex: 10px;
+    border: 1px solid rgb(61, 135, 245);
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    .poll-option-input-votes {
+      background-color: rgb(236, 243, 254);
+      height: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      transition: width 1s ease;
+      z-index: 0;
+    }
+
+    .poll-option-input-vote-count {
+      color: rgb(61, 135, 245);
+      position: absolute;
+      right: 15px;
+      font-size: 12px;
+      top: 5px;
+    }
+
+    .poll-option-input {
+      display: flex;
+      flex: 1px;
+      border: 0px;
+      padding: 7px;
+      color: rgb(61, 135, 245);
+      background-color: transparent;
+      font-weight: bold;
+      outline: 0px;
+      z-index: 0;
+
+      &::placeholder {
+        font-weight: normal;
+        color: #999;
+      }
+    }
+
+    .poll-option-delete {
+      position: relative;
+      display: flex;
+      width: 28px;
+      height: 28px;
+      margin-left: 6px;
+      border: 0px;
+      background-color: transparent;
+      background-position: 6px 6px;
+      background-repeat: no-repeat;
+      z-index: 0;
+      cursor: pointer;
+      border-radius: 5px;
+      opacity: 0.3;
+
+      &:disabled {
+        cursor: not-allowed;
+
+        &:hover {
+          opacity: 0.3;
+          background-color: transparent;
+        }
+      }
+
+      &:enabled {
+        &:hover {
+          opacity: 1;
+          background-color: #eee;
+        }
+
+        &::before,
+        &::after {
+          position: absolute;
+          display: block;
+          content: "";
+          background-color: #999;
+          width: 2px;
+          height: 15px;
+          top: 6px;
+          left: 13px;
+        }
+
+        &::before {
+          transform: rotate(-45deg);
+        }
+        &::after {
+          transform: rotate(45deg);
+        }
+      }
+    }
+  }
+}

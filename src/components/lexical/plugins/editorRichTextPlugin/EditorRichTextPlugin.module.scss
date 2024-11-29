@@ -1,0 +1,35 @@
+.richtext-wrapper {
+  position: relative;
+  width: calc(100% - 5rem);
+  height: 100%;
+  margin-left: 4.25rem;
+
+  .richtext-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .richtext {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      padding: 1rem;
+      border: none;
+      outline: none;
+      resize: none;
+      color: var(--ACHROMATIC-REVERSE);
+      font-size: 1.3rem;
+    }
+  }
+  .placeholder-container {
+    position: absolute;
+    top: calc(1rem + 5px);
+    left: 1rem;
+
+    .placeholder-text {
+      color: var(--ACHROMATIC-REVERSE);
+      opacity: 0.5;
+      font-size: 1.3rem;
+    }
+  }
+}

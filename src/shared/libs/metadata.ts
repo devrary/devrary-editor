@@ -9,7 +9,7 @@ export const getMetadata = ({
   image,
   asPath,
 }: BaseMetadataType) => {
-  const _title = title ? `Onikuma | ${title}` : BASE_METADATA.title;
+  const _title = title ? `Devrary-Editor | ${title}` : BASE_METADATA.title;
   const _siteName = siteName ? siteName : BASE_METADATA.siteName;
   const _description = description ? description : BASE_METADATA.description;
   const _image = image ? image : BASE_METADATA.image;

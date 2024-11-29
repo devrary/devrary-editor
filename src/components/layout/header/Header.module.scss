@@ -9,8 +9,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
+  z-index: 999999;
 
   .image {
+    width: 3.25rem;
+    height: 3.25rem;
     border-radius: 50%;
     box-shadow: 3px 2px 3px var(--ACHROMATIC-OPACITY-2);
   }

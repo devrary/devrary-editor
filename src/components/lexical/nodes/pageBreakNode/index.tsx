@@ -1,121 +1,46 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
-import { mergeRegister } from "@lexical/utils";
 import {
-  $getSelection,
-  $isNodeSelection,
-  CLICK_COMMAND,
-  COMMAND_PRIORITY_HIGH,
-  COMMAND_PRIORITY_LOW,
   DecoratorNode,
-  DOMConversionMap,
   DOMConversionOutput,
-  KEY_BACKSPACE_COMMAND,
-  KEY_DELETE_COMMAND,
   LexicalNode,
   NodeKey,
   SerializedLexicalNode,
+  Spread,
 } from "lexical";
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import dynamic from "next/dynamic";
 
-export type SerializedPageBreakNode = SerializedLexicalNode;
+const PageBreakComponent = dynamic(
+  () => import("@/components/lexical/ui/pageBreak")
+);
 
-function PageBreakComponent({ nodeKey }: { nodeKey: NodeKey }) {
-  const [editor] = useLexicalComposerContext();
-  const [isSelected, setSelected, clearSelection] =
-    useLexicalNodeSelection(nodeKey);
-
-  const $onDelete = useCallback(
-    (event: KeyboardEvent) => {
-      event.preventDefault();
-      const deleteSelection = $getSelection();
-      if (isSelected && $isNodeSelection(deleteSelection)) {
-        editor.update(() => {
-          deleteSelection.getNodes().forEach((node) => {
-            if ($isPageBreakNode(node)) {
-              node.remove();
-            }
-          });
-        });
-      }
-      return false;
-    },
-    [editor, isSelected]
-  );
-
-  useEffect(() => {
-    return mergeRegister(
-      editor.registerCommand(
-        CLICK_COMMAND,
-        (event: MouseEvent) => {
-          const pbElem = editor.getElementByKey(nodeKey);
-
-          if (event.target === pbElem) {
-            if (!event.shiftKey) {
-              clearSelection();
-            }
-            setSelected(!isSelected);
-            return true;
-          }
-
-          return false;
-        },
-        COMMAND_PRIORITY_LOW
-      ),
-      editor.registerCommand(
-        KEY_DELETE_COMMAND,
-        $onDelete,
-        COMMAND_PRIORITY_LOW
-      ),
-      editor.registerCommand(
-        KEY_BACKSPACE_COMMAND,
-        $onDelete,
-        COMMAND_PRIORITY_LOW
-      )
-    );
-  }, [clearSelection, editor, isSelected, nodeKey, $onDelete, setSelected]);
-
-  useEffect(() => {
-    const pbElem = editor.getElementByKey(nodeKey);
-    if (pbElem !== null) {
-      pbElem.className = isSelected ? "selected" : "";
-    }
-  }, [editor, isSelected, nodeKey]);
-
-  return null;
-}
+export type SerializedPageBreakNode = Spread<
+  {
+    sequence: number;
+  },
+  SerializedLexicalNode
+>;
 
 export class PageBreakNode extends DecoratorNode<JSX.Element> {
+  __sequence: number;
+
+  constructor(sequence: number, key?: NodeKey) {
+    super(key);
+    this.__sequence = sequence;
+  }
+
   static getType(): string {
     return "page-break";
   }
 
   static clone(node: PageBreakNode): PageBreakNode {
-    return new PageBreakNode(node.__key);
+    return new PageBreakNode(node.__sequence, node.__key);
   }
 
   static importJSON(serializedNode: SerializedPageBreakNode): PageBreakNode {
-    return $createPageBreakNode();
+    return new PageBreakNode(serializedNode.sequence);
   }
 
-  static importDOM(): DOMConversionMap | null {
-    return {
-      figure: (domNode: HTMLElement) => {
-        const tp = domNode.getAttribute("type");
-        if (tp !== this.getType()) {
-          return null;
-        }
-
-        return {
-          conversion: $convertPageBreakElement,
-          priority: COMMAND_PRIORITY_HIGH,
-        };
-      },
-    };
-  }
-
-  exportJSON(): SerializedLexicalNode {
+  exportJSON() {
     return {
       type: this.getType(),
       version: 1,
@@ -125,6 +50,20 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   createDOM(): HTMLElement {
     const el = document.createElement("figure");
     el.style.pageBreakAfter = "always";
+    el.classList.add("lexical-pb");
+
+    const span = document.createElement("span");
+    span.innerHTML = `<span>${this.__sequence}</span>`;
+    span.className = "sequence";
+    el.appendChild(span);
+
+    const div = document.createElement("div");
+    div.className = "icon";
+    div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-scissors" viewBox="0 0 16 16" transform="matrix(-1, 0, 0, 1, 0, 0)rotate(270)">
+      <path d="M3.5 3.5c-.614-.884-.074-1.962.858-2.5L8 7.226 11.642 1c.932.538 1.472 1.616.858 2.5L8.81 8.61l1.556 2.661a2.5 2.5 0 1 1-.794.637L8 9.73l-1.572 2.177a2.5 2.5 0 1 1-.794-.637L7.19 8.61 3.5 3.5zm2.5 10a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zm7 0a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+    </svg>`; // SVG를 DOM에 추가
+
+    el.appendChild(div);
     el.setAttribute("type", this.getType());
     return el;
   }
@@ -142,16 +81,25 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   }
 
   decorate(): JSX.Element {
-    return <PageBreakComponent nodeKey={this.__key} />;
+    return (
+      <PageBreakComponent nodeKey={this.__key} sequence={this.__sequence} />
+    );
+  }
+
+  setSequence(sequence: number): void {
+    const self = this.getWritable();
+    self.__sequence = sequence;
   }
 }
 
-function $convertPageBreakElement(): DOMConversionOutput {
-  return { node: $createPageBreakNode() };
+export function $convertPageBreakElement(
+  sequence: number
+): DOMConversionOutput {
+  return { node: $createPageBreakNode(sequence) };
 }
 
-export function $createPageBreakNode(): PageBreakNode {
-  return new PageBreakNode();
+export function $createPageBreakNode(sequence: number): PageBreakNode {
+  return new PageBreakNode(sequence);
 }
 
 export function $isPageBreakNode(

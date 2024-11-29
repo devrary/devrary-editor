@@ -1,15 +1,16 @@
 "use client";
 import { EditorState } from "lexical";
 import React, { ReactNode, useMemo, useState } from "react";
-import { LexicalStateShareContext } from "@/states/lexical/lexicalShareState/LexicalShareStateContext";
+import { LexicalShareStateContext } from "@/states/lexical/lexicalShareState/LexicalShareStateContext";
 
 type Props = {
   children: ReactNode;
 };
 
-const LexicalStateShareProvider = ({ children }: Props) => {
+const LexicalShareStateProvider = ({ children }: Props) => {
   const [stateStr, setStateStr] = useState<string | null>(null);
   const [state, setState] = useState<EditorState | null>(null);
+  const [stateHtml, setStateHtml] = useState<string | null>(null);
 
   const contextValue = useMemo(() => {
     return {
@@ -17,14 +18,16 @@ const LexicalStateShareProvider = ({ children }: Props) => {
       setStateStr,
       state,
       setState,
+      stateHtml,
+      setStateHtml,
     };
-  }, [stateStr, state]);
+  }, [stateStr, state, stateHtml]);
 
   return (
-    <LexicalStateShareContext.Provider value={contextValue}>
+    <LexicalShareStateContext.Provider value={contextValue}>
       {children}
-    </LexicalStateShareContext.Provider>
+    </LexicalShareStateContext.Provider>
   );
 };
 
-export default LexicalStateShareProvider;
+export default LexicalShareStateProvider;

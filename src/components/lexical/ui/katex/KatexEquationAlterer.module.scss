@@ -1,0 +1,32 @@
+.katex-equation-alterer-default {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.katex-equation-alterer-center {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  overflow: hidden;
+
+  .katex-input {
+    width: 100%;
+    resize: none;
+    padding: 7px;
+  }
+}
+
+.katex-equation-alterer-dialog-action {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-bottom: 0;
+  justify-content: right;
+}

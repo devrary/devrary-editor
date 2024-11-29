@@ -5,6 +5,11 @@ import Layout from "@/components/layout/layout";
 import Web3Provider from "@/providers/Web3Provider";
 import ReduxProvider from "@/states/global/provider";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

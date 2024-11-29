@@ -1,0 +1,148 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+  position: relative;
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: cover;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .text-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: var(--ACHROMATIC-REVERSE-OPACITY-8);
+    stroke-width: 1;
+  }
+
+  .link-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: var(--ACHROMATIC-REVERSE-OPACITY-8);
+    stroke-width: 2;
+  }
+
+  .hr-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .pb-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .image-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .gif-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .excalidraw-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .table-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .poll-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .column-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .equation-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+  .sticky-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+  .collapsible-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+  .tweet-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+  .youtube-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+  .figma-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+
+  .list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(calc(100% + 0.5rem), 0);
+    padding: 0.6rem;
+    background-color: var(--BACKGROUND-1);
+    border-radius: 1rem;
+    box-shadow: 4px 3px 3px var(--ACHROMATIC-OPACITY-4);
+    gap: 0.5rem;
+
+    .list-item {
+      padding: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1.4rem;
+      width: 16rem;
+      flex: 1;
+      flex-grow: 1;
+      border-radius: 0.5rem;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--ACHROMATIC-REVERSE-OPACITY-2);
+      }
+
+      .item-text {
+        font-size: 1.1rem;
+        color: var(--ACHROMATIC-REVERSE-OPACITY-8);
+        word-break: keep-all;
+        white-space: nowrap;
+      }
+    }
+  }
+}

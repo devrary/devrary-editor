@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import type {
   DOMConversionMap,
   DOMConversionOutput,
@@ -20,12 +12,13 @@ import type {
 } from "lexical";
 
 import { $applyNodeReplacement, createEditor, DecoratorNode } from "lexical";
+import dynamic from "next/dynamic";
 import * as React from "react";
 import { Suspense } from "react";
 
-const ImageComponent = React.lazy(
-  () => import("@/components/lexical/ui/image")
-);
+const ImageComponent = dynamic(() => import("@/components/lexical/ui/image"), {
+  ssr: false,
+});
 
 export interface ImagePayload {
   altText: string;

@@ -1,5 +1,4 @@
 import React, { ComponentProps, useState } from "react";
-import "@/components/lexical/theme/Lexical.css";
 import styles from "@/components/common/inputs/lexicalInput/LexicalInput.module.scss";
 import classNames from "classnames/bind";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";

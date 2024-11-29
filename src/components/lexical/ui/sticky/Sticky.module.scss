@@ -1,0 +1,93 @@
+.sticky-note-container {
+  position: absolute;
+  z-index: 9;
+  width: 120px;
+  display: inline-block;
+
+  .sticky-note {
+    line-height: 1;
+    text-align: left;
+    width: 120px;
+    margin: 25px;
+    padding: 20px 10px;
+    position: relative;
+    border: 1px solid #e8e8e8;
+    font-family: "Reenie Beanie";
+    font-size: 24px;
+    border-bottom-right-radius: 60px 5px;
+    display: block;
+    cursor: move;
+
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: -0px;
+      bottom: 20px;
+      width: 120px;
+      height: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      box-shadow: 2px 15px 5px rgba(0, 0, 0, 0.4);
+      transform: matrix(-1, -0.1, 0, 1, 0, 0);
+    }
+
+    .delete {
+      border: 0;
+      background: none;
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 10px;
+      cursor: pointer;
+      opacity: 0.5;
+
+      &:hover {
+        font-weight: bold;
+        opacity: 1;
+      }
+    }
+
+    .color {
+      border: 0;
+      background: none;
+      position: absolute;
+      top: 8px;
+      right: 25px;
+      cursor: pointer;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      i {
+        display: block;
+        width: 12px;
+        height: 12px;
+        background-size: contain;
+      }
+    }
+
+    .richtext-container {
+      width: calc(100% - 1.75rem);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transform: translateX(3.75rem);
+      min-height: 3.25rem;
+
+      .richtext {
+        outline: none;
+        width: 100%;
+        position: relative;
+        padding-left: 4px;
+        font-size: 1.2rem;
+        color: var(--ACHROMATIC-REVERSE);
+      }
+    }
+  }
+  .dragging {
+    transition: none !important;
+  }
+}
