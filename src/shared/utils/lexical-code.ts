@@ -1,20 +1,20 @@
 import {
   LexicalCodeExtension,
   LexicalCodeName,
-} from "@/shared/constants/lexical";
+} from '@/shared/constants/lexical';
 
 export function getLangByName(name: string): keyof typeof LexicalCodeName {
-  return LexicalCodeName[name] || "Plain-Text";
+  return LexicalCodeName[name] || 'Plain-Text';
 }
 
 export function getLangByExtension(
   extension: string
 ): keyof typeof LexicalCodeExtension {
-  return LexicalCodeExtension[extension] || "Plain-Text";
+  return LexicalCodeExtension[extension] || 'Plain-Text';
 }
 
 export function getDefaultLang(): keyof typeof LexicalCodeName {
-  return "Plain-Text";
+  return 'Plain-Text';
 }
 
 export function getCodeLangOptions(): [string, string][] {

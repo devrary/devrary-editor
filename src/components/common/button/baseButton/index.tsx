@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
-import styles from "@/components/common/button/baseButton/BaseButton.module.scss";
-import classNames from "classnames/bind";
-import { ButtonSize } from "@/shared/types/ui/button";
+import React, { ReactNode } from 'react';
+import styles from '@/components/common/button/baseButton/BaseButton.module.scss';
+import classNames from 'classnames/bind';
+import { ButtonSize } from '@/shared/types/ui/button';
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +28,7 @@ const BaseButton = ({
       onClick={onClick}
       title={title}
       aria-label={title}
-      className={cx("button-container", ...classNames)}
+      className={cx('button-container', ...classNames)}
     >
       {children}
     </button>

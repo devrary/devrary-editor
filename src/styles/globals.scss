@@ -1,10 +1,16 @@
-@use "@/styles/_theme.scss" as *;
-@import "@/styles/_color.scss";
-@import "@/styles/_font.scss";
-@import "@/styles/_mixin.scss";
+@use '@/styles/_theme.scss' as *;
+@import '@/styles/_color.scss';
+@import '@/styles/_font.scss';
+@import '@/styles/_mixin.scss';
 
 :root {
   font-size: 12px;
+
+  --HIGHLIGHT-YELLOW: #{$HIGHLIGHT-YELLOW};
+  --HIGHLIGHT-GREEN: #{$HIGHLIGHT-GREEN};
+  --HIGHLIGHT-BLUE: #{$HIGHLIGHT-BLUE};
+  --HIGHLIGHT-PINK: #{$HIGHLIGHT-PINK};
+  --HIGHLIGHT-PURPLE: #{$HIGHLIGHT-PURPLE};
 }
 
 * {

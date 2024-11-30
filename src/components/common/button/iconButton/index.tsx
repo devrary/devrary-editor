@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
-import styles from "@/components/common/button/iconButton/IconButton.module.scss";
-import classNames from "classnames/bind";
-import { Tooltip } from "@mui/material";
+import React, { ReactNode } from 'react';
+import styles from '@/components/common/button/iconButton/IconButton.module.scss';
+import classNames from 'classnames/bind';
+import { Tooltip } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -31,7 +31,7 @@ const IconButton = ({
           popper: {
             modifiers: [
               {
-                name: "offset",
+                name: 'offset',
                 options: {
                   offset: [0, -10],
                 },
@@ -42,7 +42,7 @@ const IconButton = ({
       >
         <button
           disabled={disabled}
-          className={cx("button-container")}
+          className={cx('button-container')}
           onClick={onClick}
         >
           {children}
@@ -53,7 +53,7 @@ const IconButton = ({
   return (
     <button
       disabled={disabled}
-      className={cx("button-container")}
+      className={cx('button-container')}
       onClick={onClick}
     >
       {children}

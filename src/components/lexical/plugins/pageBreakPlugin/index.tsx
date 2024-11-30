@@ -1,5 +1,6 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $insertNodeToNearestRoot, mergeRegister } from "@lexical/utils";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $insertNodeToNearestRoot, mergeRegister } from '@lexical/utils';
 import {
   $getRoot,
   $getSelection,
@@ -7,13 +8,13 @@ import {
   COMMAND_PRIORITY_EDITOR,
   createCommand,
   LexicalCommand,
-} from "lexical";
-import { useEffect, useState } from "react";
+} from 'lexical';
+import { useEffect, useState } from 'react';
 
 import {
   $createPageBreakNode,
   PageBreakNode,
-} from "@/components/lexical/nodes/pageBreakNode";
+} from '@/components/lexical/nodes/pageBreakNode';
 
 export const INSERT_PAGE_BREAK: LexicalCommand<undefined> = createCommand();
 
@@ -24,7 +25,7 @@ export default function PageBreakPlugin(): JSX.Element | null {
   useEffect(() => {
     if (!editor.hasNodes([PageBreakNode])) {
       throw new Error(
-        "PageBreakPlugin: PageBreakNode is not registered on editor"
+        'PageBreakPlugin: PageBreakNode is not registered on editor'
       );
     }
 
@@ -38,10 +39,9 @@ export default function PageBreakPlugin(): JSX.Element | null {
         let index = 1;
         root.getChildren().forEach((node) => {
           if (
-            node.getType() === "page-break" &&
+            node.getType() === 'page-break' &&
             node instanceof PageBreakNode
           ) {
-            console.log("page-break node");
             const pgBreak = $createPageBreakNode(index);
             node.replace(pgBreak);
             index++;
@@ -66,7 +66,7 @@ export default function PageBreakPlugin(): JSX.Element | null {
 
             root.getChildren().forEach((node) => {
               if (
-                node.getType() === "page-break" &&
+                node.getType() === 'page-break' &&
                 node instanceof PageBreakNode
               ) {
                 index++;
