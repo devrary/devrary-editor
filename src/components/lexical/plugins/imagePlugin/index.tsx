@@ -1,11 +1,12 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $wrapNodeInElement, mergeRegister } from '@lexical/utils';
 import {
   $createParagraphNode,
   $createRangeSelection,
   $getSelection,
   $insertNodes,
   $isNodeSelection,
+  $isRangeSelection,
   $isRootOrShadowRoot,
   $setSelection,
   COMMAND_PRIORITY_EDITOR,
@@ -17,21 +18,22 @@ import {
   DROP_COMMAND,
   LexicalCommand,
   LexicalEditor,
-} from "lexical";
-import { Fragment, useState, useMemo, useRef, useEffect } from "react";
-import * as React from "react";
-import { CAN_USE_DOM } from "@lexical/utils";
+} from 'lexical';
+import { Fragment, useState, useMemo, useRef, useEffect } from 'react';
+import * as React from 'react';
+import { CAN_USE_DOM } from '@lexical/utils';
 import {
   $createImageNode,
   $isImageNode,
   ImageNode,
   ImagePayload,
-} from "@/components/lexical/nodes/imageNode";
-import TextInput from "@/components/common/inputs/textInput";
-import BaseDialog from "@/components/common/dialog/baseDialog";
-import BaseButton from "@/components/common/button/baseButton";
-import FileInput from "@/components/common/inputs/fileInput";
-import ListDialog from "@/components/common/dialog/listDialog";
+} from '@/components/lexical/nodes/imageNode';
+import TextInput from '@/components/common/inputs/textInput';
+import BaseDialog from '@/components/common/dialog/baseDialog';
+import BaseButton from '@/components/common/button/baseButton';
+import FileInput from '@/components/common/inputs/fileInput';
+import ListDialog from '@/components/common/dialog/listDialog';
+import { ImageInsertionNode } from '@/components/lexical/nodes/imageInsertionNode';
 
 export type InsertImagePayload = Readonly<ImagePayload>;
 
@@ -39,18 +41,18 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
   CAN_USE_DOM ? (targetWindow || window).getSelection() : null;
 
 export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> =
-  createCommand("INSERT_IMAGE_COMMAND");
+  createCommand('INSERT_IMAGE_COMMAND');
 
 export function InsertImageUriDialogBody({
   onClick,
 }: {
   onClick: (payload: InsertImagePayload) => void;
 }) {
-  const [src, setSrc] = useState("");
-  const [altText, setAltText] = useState("");
+  const [src, setSrc] = useState('');
+  const [altText, setAltText] = useState('');
 
   const isDisabled = useMemo(() => {
-    return src === "";
+    return src === '';
   }, [src]);
 
   return (
@@ -86,18 +88,18 @@ export function InsertImageUploadedDialogBody({
 }: {
   onClick: (payload: InsertImagePayload) => void;
 }) {
-  const [src, setSrc] = useState("");
-  const [altText, setAltText] = useState("");
+  const [src, setSrc] = useState('');
+  const [altText, setAltText] = useState('');
 
-  const isDisabled = src === "";
+  const isDisabled = src === '';
 
   const loadImage = (files: FileList | null) => {
     const reader = new FileReader();
     reader.onload = function () {
-      if (typeof reader.result === "string") {
+      if (typeof reader.result === 'string') {
         setSrc(reader.result);
       }
-      return "";
+      return '';
     };
     if (files !== null) {
       reader.readAsDataURL(files[0]);
@@ -134,7 +136,7 @@ export function InsertImageDialog({
   activeEditor: LexicalEditor;
   onClose: () => void;
 }): JSX.Element {
-  const [mode, setMode] = useState<null | "url" | "file">(null);
+  const [mode, setMode] = useState<null | 'url' | 'file'>(null);
   const hasModifier = useRef(false);
 
   useEffect(() => {
@@ -142,12 +144,12 @@ export function InsertImageDialog({
     const handler = (e: KeyboardEvent) => {
       hasModifier.current = e.altKey;
     };
-    document.addEventListener("keydown", handler);
+    document.addEventListener('keydown', handler);
     return () => {
-      document.removeEventListener("keydown", handler);
+      document.removeEventListener('keydown', handler);
     };
   }, [activeEditor]);
-
+  /** 중요 */
   const onClick = (payload: InsertImagePayload) => {
     activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
     onClose();
@@ -157,16 +159,16 @@ export function InsertImageDialog({
     <Fragment>
       {!mode && (
         <ListDialog>
-          <BaseButton size="medium" onClick={() => setMode("url")}>
+          <BaseButton size="medium" onClick={() => setMode('url')}>
             URL
           </BaseButton>
-          <BaseButton onClick={() => setMode("file")} size="medium">
+          <BaseButton onClick={() => setMode('file')} size="medium">
             File
           </BaseButton>
         </ListDialog>
       )}
-      {mode === "url" && <InsertImageUriDialogBody onClick={onClick} />}
-      {mode === "file" && <InsertImageUploadedDialogBody onClick={onClick} />}
+      {mode === 'url' && <InsertImageUriDialogBody onClick={onClick} />}
+      {mode === 'file' && <InsertImageUploadedDialogBody onClick={onClick} />}
     </Fragment>
   );
 }
@@ -179,10 +181,26 @@ export default function ImagePlugin({
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    if (!editor.hasNodes([ImageNode])) {
-      throw new Error("ImagesPlugin: ImageNode not registered on editor");
+    if (!editor.hasNodes([ImageInsertionNode, ImageNode])) {
+      throw new Error('ImagesPlugin: ImageNode not registered on editor');
     }
 
+    return editor.registerUpdateListener(() => {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) {
+          return false;
+        }
+      });
+    });
+  }, [editor]);
+
+  useEffect(() => {
+    if (!editor.hasNodes([ImageNode])) {
+      throw new Error('ImagesPlugin: ImageNode not registered on editor');
+    }
+
+    /** 중요 */
     return mergeRegister(
       editor.registerCommand<InsertImagePayload>(
         INSERT_IMAGE_COMMAND,
@@ -226,8 +244,8 @@ export default function ImagePlugin({
 
 function $onDragStart(event: DragEvent): boolean {
   const TRANSPARENT_IMAGE =
-    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-  const img = document.createElement("img");
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  const img = document.createElement('img');
   img.src = TRANSPARENT_IMAGE;
   const node = $getImageNodeInSelection();
   if (!node) {
@@ -237,10 +255,10 @@ function $onDragStart(event: DragEvent): boolean {
   if (!dataTransfer) {
     return false;
   }
-  dataTransfer.setData("text/plain", "_");
+  dataTransfer.setData('text/plain', '_');
   dataTransfer.setDragImage(img, 0, 0);
   dataTransfer.setData(
-    "application/x-lexical-drag",
+    'application/x-lexical-drag',
     JSON.stringify({
       data: {
         altText: node.__altText,
@@ -252,7 +270,7 @@ function $onDragStart(event: DragEvent): boolean {
         src: node.__src,
         width: node.__width,
       },
-      type: "image",
+      type: 'image',
     })
   );
 
@@ -304,12 +322,12 @@ function $getImageNodeInSelection(): ImageNode | null {
 }
 
 function getDragImageData(event: DragEvent): null | InsertImagePayload {
-  const dragData = event.dataTransfer?.getData("application/x-lexical-drag");
+  const dragData = event.dataTransfer?.getData('application/x-lexical-drag');
   if (!dragData) {
     return null;
   }
   const { type, data } = JSON.parse(dragData);
-  if (type !== "image") {
+  if (type !== 'image') {
     return null;
   }
 
@@ -328,9 +346,9 @@ function canDropImage(event: DragEvent): boolean {
   return !!(
     target &&
     target instanceof HTMLElement &&
-    !target.closest("code, span.editor-image") &&
+    !target.closest('code, span.editor-image') &&
     target.parentElement &&
-    target.parentElement.closest("div.ContentEditable__root")
+    target.parentElement.closest('div.ContentEditable__root')
   );
 }
 

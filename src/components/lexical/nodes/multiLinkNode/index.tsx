@@ -2,22 +2,20 @@ import {
   DecoratorNode,
   type DOMConversionOutput,
   type DOMExportOutput,
-  type EditorConfig,
-  type LexicalEditor,
   type LexicalNode,
   type NodeKey,
   type SerializedLexicalNode,
   type Spread,
-} from "lexical";
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
+} from 'lexical';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 
-type DisplayType = "embed" | "mark";
+type DisplayType = 'embed' | 'mark';
 
-type Dimension = number | "inherit";
+type Dimension = number | 'inherit';
 
 const LinkDisplayComponent = dynamic(() => {
-  return import("@/components/lexical/ui/linkDisplay");
+  return import('@/components/lexical/ui/multiLink');
 });
 
 export type SerializedMultiLinkNode = Spread<
@@ -34,15 +32,15 @@ export function $convertMultiLinkElement(
   domNode: HTMLElement,
   display: DisplayType
 ): DOMConversionOutput | null {
-  const multiLinkData = domNode.getAttribute("data-lexical-multi-link-json");
+  const multiLinkData = domNode.getAttribute('data-lexical-multi-link-json');
   const stylesAttributes = window.getComputedStyle(domNode);
-  const heightStr = stylesAttributes.getPropertyValue("height");
-  const widthStr = stylesAttributes.getPropertyValue("width");
+  const heightStr = stylesAttributes.getPropertyValue('height');
+  const widthStr = stylesAttributes.getPropertyValue('width');
 
   const height =
-    !heightStr || heightStr === "inherit" ? "inherit" : parseInt(heightStr, 10);
+    !heightStr || heightStr === 'inherit' ? 'inherit' : parseInt(heightStr, 10);
   const width =
-    !widthStr || widthStr === "inherit" ? "inherit" : parseInt(widthStr, 10);
+    !widthStr || widthStr === 'inherit' ? 'inherit' : parseInt(widthStr, 10);
 
   if (multiLinkData) {
     const node = $createMultiLinkNode(multiLinkData, display, width, height);
@@ -60,10 +58,10 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
   __height: Dimension;
 
   constructor(
-    data: string = "[]",
+    data: string = '[]',
     display: DisplayType,
-    width: Dimension = "inherit",
-    height: Dimension = "inherit",
+    width: Dimension = 'inherit',
+    height: Dimension = 'inherit',
     key?: NodeKey
   ) {
     super(key);
@@ -74,7 +72,7 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
   }
 
   static getType(): string {
-    return "multi-link";
+    return 'multi-link';
   }
 
   static clone(node: MultiLinkNode): MultiLinkNode {
@@ -91,8 +89,8 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
     return new MultiLinkNode(
       serializedNode.data,
       serializedNode.display,
-      serializedNode.width ?? "inherit",
-      serializedNode.height ?? "inherit"
+      serializedNode.width ?? 'inherit',
+      serializedNode.height ?? 'inherit'
     );
   }
 
@@ -104,7 +102,7 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
       width: this.__width,
       height: this.__height,
       version: 1,
-      type: "multi-link",
+      type: 'multi-link',
     };
   }
 
@@ -112,16 +110,16 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  exportDOM(editor: LexicalEditor): DOMExportOutput {
-    const element = document.createElement("span");
-    element.style.display = "inline-block";
+  exportDOM(): DOMExportOutput {
+    const element = document.createElement('span');
+    element.style.display = 'inline-block';
 
     element.style.width =
-      this.__width === "inherit" ? "inherit" : `${this.__width}px`;
+      this.__width === 'inherit' ? 'inherit' : `${this.__width}px`;
     element.style.height =
-      this.__height === "inherit" ? "inherit" : `${this.__height}px`;
+      this.__height === 'inherit' ? 'inherit' : `${this.__height}px`;
 
-    element.setAttribute("data-lexical-excalidraw-json", this.__data);
+    element.setAttribute('data-lexical-excalidraw-json', this.__data);
     return { element };
   }
 
@@ -148,7 +146,7 @@ export class MultiLinkNode extends DecoratorNode<JSX.Element> {
     self.__height = height;
   }
 
-  decorate(editor: LexicalEditor, config: EditorConfig): JSX.Element {
+  decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>
         <LinkDisplayComponent

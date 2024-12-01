@@ -12,17 +12,24 @@ import {
   EditorConfig,
   DOMExportOutput,
   DOMConversionMap,
-} from "lexical";
+} from 'lexical';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+
+const ImageInsertionComponent = dynamic(
+  () => import('@/components/lexical/ui/imageInsertion'),
+  { ssr: false }
+);
 
 export interface ImageInsertionPayload {
   altText: string;
   caption?: LexicalEditor;
-  height?: number;
+  height?: number | 'inherit';
   key?: NodeKey;
   maxWidth?: number;
   showCaption?: boolean;
   src: string;
-  width?: number;
+  width?: number | 'inherit';
   captionsEnabled?: boolean;
 }
 
@@ -42,8 +49,8 @@ export type SerializedImageInsertionNode = Spread<
 export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   __src: string;
   __altText: string;
-  __width: "inherit" | number;
-  __height: "inherit" | number;
+  __width: 'inherit' | number;
+  __height: 'inherit' | number;
   __maxWidth: number;
   __showCaption: boolean;
   __caption: LexicalEditor;
@@ -53,8 +60,8 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
     src: string,
     altText: string,
     maxWidth: number,
-    width?: "inherit" | number,
-    height?: "inherit" | number,
+    width?: 'inherit' | number,
+    height?: 'inherit' | number,
     showCaption?: boolean,
     caption?: LexicalEditor,
     captionsEnabled?: boolean,
@@ -64,8 +71,8 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
     this.__src = src;
     this.__altText = altText;
     this.__maxWidth = maxWidth;
-    this.__width = width || "inherit";
-    this.__height = height || "inherit";
+    this.__width = width || 'inherit';
+    this.__height = height || 'inherit';
     this.__showCaption = showCaption || false;
     this.__caption =
       caption ||
@@ -76,7 +83,7 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   static getType(): string {
-    return "image-insertion";
+    return 'image-insertion';
   }
 
   static clone(node: ImageInsertionNode): ImageInsertionNode {
@@ -97,19 +104,19 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
     return {
       altText: this.getAltText(),
       caption: this.__caption.toJSON(),
-      height: this.__height === "inherit" ? 0 : this.__height,
+      height: this.__height === 'inherit' ? 0 : this.__height,
       maxWidth: this.__maxWidth,
       showCaption: this.__showCaption,
       src: this.getSrc(),
-      type: "image",
+      type: 'image',
       version: 1,
-      width: this.__width === "inherit" ? 0 : this.__width,
+      width: this.__width === 'inherit' ? 0 : this.__width,
     };
   }
 
   setWidthAndHeight(
-    width: "inherit" | number,
-    height: "inherit" | number
+    width: 'inherit' | number,
+    height: 'inherit' | number
   ): void {
     const writable = this.getWritable();
     writable.__width = width;
@@ -122,7 +129,7 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   createDOM(config: EditorConfig): HTMLElement {
-    const span = document.createElement("span");
+    const span = document.createElement('span');
     const theme = config.theme;
     const className = theme.image;
     if (className !== undefined) {
@@ -165,21 +172,38 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement("img");
-    element.setAttribute("src", this.__src);
-    element.setAttribute("alt", this.__altText);
-    element.setAttribute("width", this.__width.toString());
-    element.setAttribute("height", this.__height.toString());
+    const element = document.createElement('img');
+    element.setAttribute('src', this.__src);
+    element.setAttribute('alt', this.__altText);
+    element.setAttribute('width', this.__width.toString());
+    element.setAttribute('height', this.__height.toString());
     return { element };
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
-      img: (node: Node) => ({
+      img: () => ({
         conversion: $convertImageInsertionElement,
         priority: 0,
       }),
     };
+  }
+
+  decorate(): JSX.Element {
+    return (
+      <Suspense fallback={null}>
+        <ImageInsertionComponent
+          src={this.__src}
+          altText={this.__altText}
+          maxWidth={this.__maxWidth}
+          width={this.__width}
+          height={this.__height}
+          showCaption={this.__showCaption}
+          caption={this.__caption}
+          captionsEnabled={this.__captionsEnabled}
+        />
+      </Suspense>
+    );
   }
 }
 

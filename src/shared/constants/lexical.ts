@@ -30,6 +30,9 @@ import { CollapsibleContainerNode } from '@/components/lexical/nodes/collapsible
 import { CollapsibleContentNode } from '@/components/lexical/nodes/collapsibleContentNode';
 import { CollapsibleTitleNode } from '@/components/lexical/nodes/collapsibleTitleNode';
 import { MultiLinkNode } from '@/components/lexical/nodes/multiLinkNode';
+import { GithubNode } from '@/components/lexical/nodes/githubNode';
+import { AdvancedCodeNode } from '@/components/lexical/nodes/advancedCode';
+import { ImageInsertionNode } from '@/components/lexical/nodes/imageInsertionNode';
 
 export const LexicalBlockFormat = {
   bullet: 'Bulleted List',
@@ -257,4 +260,7 @@ export const LexicalNodeFormatOptions: {
   collapsiblecontent: CollapsibleContentNode,
   collapsibletitle: CollapsibleTitleNode,
   multilink: MultiLinkNode,
+  github: GithubNode,
+  advancedcode: AdvancedCodeNode,
+  imageinsertion: ImageInsertionNode,
 };

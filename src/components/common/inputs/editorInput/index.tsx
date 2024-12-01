@@ -31,7 +31,7 @@ import dynamic from 'next/dynamic';
 import EmojiListPlugin from '@/components/lexical/plugins/emojiListPlugin';
 import ExcalidrawPlugin from '@/components/lexical/plugins/excalidrawPlugin';
 import EquationsPlugin from '@/components/lexical/plugins/equationPlugin';
-import AutocompletePlugin from '@/components/lexical/plugins/autoCompletePlugin';
+// import AutocompletePlugin from '@/components/lexical/plugins/autoCompletePlugin';
 import TwitterPlugin from '@/components/lexical/plugins/tweetPlugin';
 import YouTubePlugin from '@/components/lexical/plugins/youtubePlugin';
 import FigmaPlugin from '@/components/lexical/plugins/figmaPlugin';
@@ -87,7 +87,7 @@ const EditorInput = () => {
                   />
                 </div>
                 <EditorRichTextPlugin />
-                {/* <AutoFocusPlugin /> */}
+                <AutoFocusPlugin />
                 <PastePlugin />
                 <LinkPlugin />
                 <CheckListPlugin />
@@ -111,7 +111,7 @@ const EditorInput = () => {
                 <EmojiPickerPlugin />
                 <ExcalidrawPlugin />
                 <EquationsPlugin />
-                <AutocompletePlugin />
+                {/* <AutocompletePlugin /> */}
                 <TwitterPlugin />
                 <YouTubePlugin />
                 <FigmaPlugin />

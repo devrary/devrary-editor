@@ -20,6 +20,8 @@ import TextIcon from '@/public/icon/text.svg';
 import { useOnClick } from '@/shared/hooks/useOnClick';
 import IconButton from '@/components/common/button/iconButton';
 import LinkIcon from '@/public/icon/link-embed.svg';
+import GithubIcon from '@/public/icon/github.svg';
+import AdvancedCodeIcon from '@/public/icon/advanced-code.svg';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $createHorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import {
@@ -104,6 +106,17 @@ const NodeFormat = ({ direction }: Props) => {
           );
         case 'link':
           return <LinkIcon viewBox="0 0 24 24" className={cx('link-icon')} />;
+        case 'github':
+          return (
+            <GithubIcon viewBox="0 0 98 96" className={cx('github-icon')} />
+          );
+        case 'advancedcode':
+          return (
+            <AdvancedCodeIcon
+              viewBox="0 0 256 256"
+              className={cx('advanced-code-icon')}
+            />
+          );
       }
     },
     [nodeType]
@@ -176,6 +189,10 @@ const NodeFormat = ({ direction }: Props) => {
             <span className={cx('item-text')}>Page Break</span>
           </button>
           <button className={cx('list-item')}>
+            {getIcon('advancedcode')}
+            <span className={cx('item-text')}>Advanced Code</span>
+          </button>
+          <button className={cx('list-item')}>
             {getIcon('image')}
             <span className={cx('item-text')}>Image</span>
           </button>
@@ -226,6 +243,10 @@ const NodeFormat = ({ direction }: Props) => {
           <button className={cx('list-item')}>
             {getIcon('figma')}
             <span className={cx('item-text')}>Figma</span>
+          </button>
+          <button className={cx('list-item')}>
+            {getIcon('github')}
+            <span className={cx('item-text')}>Github</span>
           </button>
         </div>
       )}

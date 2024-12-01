@@ -5,14 +5,14 @@ import type {
   LexicalNode,
   NodeKey,
   Spread,
-} from "lexical";
+} from 'lexical';
 
-import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
+import { BlockWithAlignableContents } from '@lexical/react/LexicalBlockWithAlignableContents';
 import {
   DecoratorBlockNode,
   SerializedDecoratorBlockNode,
-} from "@lexical/react/LexicalDecoratorBlockNode";
-import * as React from "react";
+} from '@lexical/react/LexicalDecoratorBlockNode';
+import * as React from 'react';
 
 type FigmaComponentProps = Readonly<{
   className: Readonly<{
@@ -58,7 +58,7 @@ export class FigmaNode extends DecoratorBlockNode {
   __id: string;
 
   static getType(): string {
-    return "figma";
+    return 'figma';
   }
 
   static clone(node: FigmaNode): FigmaNode {
@@ -75,7 +75,7 @@ export class FigmaNode extends DecoratorBlockNode {
     return {
       ...super.exportJSON(),
       documentID: this.__id,
-      type: "figma",
+      type: 'figma',
       version: 1,
     };
   }
@@ -93,18 +93,15 @@ export class FigmaNode extends DecoratorBlockNode {
     return this.__id;
   }
 
-  getTextContent(
-    _includeInert?: boolean | undefined,
-    _includeDirectionless?: false | undefined
-  ): string {
+  getTextContent(): string {
     return `https://www.figma.com/file/${this.__id}`;
   }
 
   decorate(_editor: LexicalEditor, config: EditorConfig): JSX.Element {
     const embedBlockTheme = config.theme.embedBlock || {};
     const className = {
-      base: embedBlockTheme.base || "",
-      focus: embedBlockTheme.focus || "",
+      base: embedBlockTheme.base || '',
+      focus: embedBlockTheme.focus || '',
     };
     return (
       <FigmaComponent
