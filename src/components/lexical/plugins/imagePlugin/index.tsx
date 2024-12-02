@@ -33,7 +33,6 @@ import BaseDialog from '@/components/common/dialog/baseDialog';
 import BaseButton from '@/components/common/button/baseButton';
 import FileInput from '@/components/common/inputs/fileInput';
 import ListDialog from '@/components/common/dialog/listDialog';
-import { ImageInsertionNode } from '@/components/lexical/nodes/imageInsertionNode';
 
 export type InsertImagePayload = Readonly<ImagePayload>;
 
@@ -181,7 +180,7 @@ export default function ImagePlugin({
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    if (!editor.hasNodes([ImageInsertionNode, ImageNode])) {
+    if (!editor.hasNodes([ImageNode])) {
       throw new Error('ImagesPlugin: ImageNode not registered on editor');
     }
 

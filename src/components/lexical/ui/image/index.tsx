@@ -1,18 +1,20 @@
+/** @format */
+
 import type {
   BaseSelection,
   LexicalCommand,
   LexicalEditor,
   NodeKey,
-} from "lexical";
-import { HashtagNode } from "@lexical/hashtag";
-import { LinkNode } from "@lexical/link";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { HashtagPlugin } from "@lexical/react/LexicalHashtagPlugin";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { LexicalNestedComposer } from "@lexical/react/LexicalNestedComposer";
-import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
-import { mergeRegister } from "@lexical/utils";
+} from 'lexical';
+import { HashtagNode } from '@lexical/hashtag';
+import { LinkNode } from '@lexical/link';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { LexicalNestedComposer } from '@lexical/react/LexicalNestedComposer';
+import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
+import { mergeRegister } from '@lexical/utils';
 import {
   $getNodeByKey,
   $getSelection,
@@ -32,8 +34,8 @@ import {
   RootNode,
   SELECTION_CHANGE_COMMAND,
   TextNode,
-} from "lexical";
-import * as React from "react";
+} from 'lexical';
+import * as React from 'react';
 import {
   Suspense,
   useCallback,
@@ -41,32 +43,32 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { useLexicalHistory } from "@/states/lexical/lexicalHistory/LexicalHistoryProvider";
-import { $isImageNode } from "@/components/lexical/nodes/imageNode";
-import LexicalRichTextPlugin from "@/components/lexical/plugins/richTextPlugin";
-import LinkPlugin from "@/components/lexical/plugins/linkPlugin";
-import BrokenImage from "@/components/lexical/ui/image/BrokenImage";
-import LazyImage from "@/components/lexical/ui/image/LazyImage";
-import ImageResizer from "@/components/lexical/ui/imageResizer";
-import styles from "@/components/lexical/ui/inlineImage/InlineImage.module.scss";
-import classNames from "classnames/bind";
+} from 'react';
+import { useLexicalHistory } from '@/states/lexical/lexicalHistory/LexicalHistoryProvider';
+import { $isImageNode } from '@/components/lexical/nodes/imageNode';
+import LexicalRichTextPlugin from '@/components/lexical/plugins/richTextPlugin';
+import LinkPlugin from '@/components/lexical/plugins/linkPlugin';
+import BrokenImage from '@/components/lexical/ui/image/BrokenImage';
+import LazyImage from '@/components/lexical/ui/image/LazyImage';
+import ImageResizer from '@/components/lexical/ui/imageResizer';
+import styles from '@/components/lexical/ui/inlineImage/InlineImage.module.scss';
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
 export const RIGHT_CLICK_IMAGE_COMMAND: LexicalCommand<MouseEvent> =
-  createCommand("RIGHT_CLICK_IMAGE_COMMAND");
+  createCommand('RIGHT_CLICK_IMAGE_COMMAND');
 
 type Props = {
   altText: string;
   caption: LexicalEditor;
-  height: "inherit" | number;
+  height: 'inherit' | number;
   maxWidth: number;
   nodeKey: NodeKey;
   resizable: boolean;
   showCaption: boolean;
   src: string;
-  width: "inherit" | number;
+  width: 'inherit' | number;
   captionsEnabled: boolean;
 };
 
@@ -189,7 +191,7 @@ const Image = ({
         const latestSelection = $getSelection();
         const domElement = event.target as HTMLElement;
         if (
-          domElement.tagName === "IMG" &&
+          domElement.tagName === 'IMG' &&
           $isRangeSelection(latestSelection) &&
           latestSelection.getNodes().length === 1
         ) {
@@ -234,8 +236,6 @@ const Image = ({
         DRAGSTART_COMMAND,
         (event) => {
           if (event.target === imageRef.current) {
-            // TODO This is just a temporary workaround for FF to behave like other browsers.
-            // Ideally, this handles drag & drop too (and all browsers).
             event.preventDefault();
             return true;
           }
@@ -261,12 +261,12 @@ const Image = ({
       )
     );
 
-    rootElement?.addEventListener("contextmenu", onRightClick);
+    rootElement?.addEventListener('contextmenu', onRightClick);
 
     return () => {
       isMounted = false;
       unregister();
-      rootElement?.removeEventListener("contextmenu", onRightClick);
+      rootElement?.removeEventListener('contextmenu', onRightClick);
     };
   }, [
     clearSelection,
@@ -292,8 +292,8 @@ const Image = ({
   };
 
   const onResizeEnd = (
-    nextWidth: "inherit" | number,
-    nextHeight: "inherit" | number
+    nextWidth: 'inherit' | number,
+    nextHeight: 'inherit' | number
   ) => {
     // Delay hiding the resize bars for click case
     setTimeout(() => {
@@ -333,7 +333,7 @@ const Image = ({
               src={src}
               className={
                 isFocused
-                  ? `focused ${$isNodeSelection(selection) ? "draggable" : ""}`
+                  ? `focused ${$isNodeSelection(selection) ? 'draggable' : ''}`
                   : null
               }
               altText={altText}
@@ -347,7 +347,7 @@ const Image = ({
         </div>
 
         {showCaption && (
-          <div className={cx("image-caption-container")}>
+          <div className={cx('image-caption-container')}>
             <LexicalNestedComposer
               initialEditor={caption}
               initialNodes={[

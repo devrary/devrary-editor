@@ -1,12 +1,9 @@
 import {
   Spread,
   SerializedLexicalNode,
-  SerializedEditor,
   DOMConversionOutput,
   DecoratorNode,
-  LexicalEditor,
   NodeKey,
-  createEditor,
   $applyNodeReplacement,
   LexicalNode,
   EditorConfig,
@@ -21,65 +18,25 @@ const ImageInsertionComponent = dynamic(
   { ssr: false }
 );
 
+export type ImageInsertionType = 'file' | 'url' | null;
+
 export interface ImageInsertionPayload {
-  altText: string;
-  caption?: LexicalEditor;
-  height?: number | 'inherit';
-  key?: NodeKey;
-  maxWidth?: number;
-  showCaption?: boolean;
-  src: string;
-  width?: number | 'inherit';
-  captionsEnabled?: boolean;
+  mode: ImageInsertionType;
 }
 
 export type SerializedImageInsertionNode = Spread<
   {
-    src: string;
-    altText: string;
-    maxWidth: number;
-    width: number;
-    height: number;
-    showCaption: boolean;
-    caption: SerializedEditor;
+    mode: ImageInsertionType;
   },
   SerializedLexicalNode
 >;
 
 export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
-  __src: string;
-  __altText: string;
-  __width: 'inherit' | number;
-  __height: 'inherit' | number;
-  __maxWidth: number;
-  __showCaption: boolean;
-  __caption: LexicalEditor;
-  __captionsEnabled: boolean;
+  __mode: ImageInsertionType;
 
-  constructor(
-    src: string,
-    altText: string,
-    maxWidth: number,
-    width?: 'inherit' | number,
-    height?: 'inherit' | number,
-    showCaption?: boolean,
-    caption?: LexicalEditor,
-    captionsEnabled?: boolean,
-    key?: NodeKey
-  ) {
+  constructor(mode: ImageInsertionType, key?: NodeKey) {
     super(key);
-    this.__src = src;
-    this.__altText = altText;
-    this.__maxWidth = maxWidth;
-    this.__width = width || 'inherit';
-    this.__height = height || 'inherit';
-    this.__showCaption = showCaption || false;
-    this.__caption =
-      caption ||
-      createEditor({
-        nodes: [],
-      });
-    this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
+    this.__mode = mode;
   }
 
   static getType(): string {
@@ -87,45 +44,15 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: ImageInsertionNode): ImageInsertionNode {
-    return new ImageInsertionNode(
-      node.__src,
-      node.__altText,
-      node.__maxWidth,
-      node.__width,
-      node.__height,
-      node.__showCaption,
-      node.__caption,
-      node.__captionsEnabled,
-      node.__key
-    );
+    return new ImageInsertionNode(node.__mode, node.getKey());
   }
 
   exportJSON(): SerializedImageInsertionNode {
     return {
-      altText: this.getAltText(),
-      caption: this.__caption.toJSON(),
-      height: this.__height === 'inherit' ? 0 : this.__height,
-      maxWidth: this.__maxWidth,
-      showCaption: this.__showCaption,
-      src: this.getSrc(),
-      type: 'image',
+      type: 'image-insertion',
       version: 1,
-      width: this.__width === 'inherit' ? 0 : this.__width,
+      mode: this.__mode,
     };
-  }
-
-  setWidthAndHeight(
-    width: 'inherit' | number,
-    height: 'inherit' | number
-  ): void {
-    const writable = this.getWritable();
-    writable.__width = width;
-    writable.__height = height;
-  }
-
-  setShowCaption(showCaption: boolean): void {
-    const writable = this.getWritable();
-    writable.__showCaption = showCaption;
   }
 
   createDOM(config: EditorConfig): HTMLElement {
@@ -142,41 +69,24 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  getSrc(): string {
-    return this.__src;
-  }
-
-  getAltText(): string {
-    return this.__altText;
+  getMode(): ImageInsertionType {
+    return this.__mode;
   }
 
   static importJSON(
     serializedNode: SerializedImageInsertionNode
   ): ImageInsertionNode {
-    const { altText, height, width, maxWidth, caption, src, showCaption } =
-      serializedNode;
+    const { mode } = serializedNode;
     const node = $createImageInsertionNode({
-      altText,
-      height,
-      maxWidth,
-      showCaption,
-      src,
-      width,
+      mode,
     });
-    const nestedEditor = node.__caption;
-    const editorState = nestedEditor.parseEditorState(caption.editorState);
-    if (!editorState.isEmpty()) {
-      nestedEditor.setEditorState(editorState);
-    }
+
     return node;
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('img');
-    element.setAttribute('src', this.__src);
-    element.setAttribute('alt', this.__altText);
-    element.setAttribute('width', this.__width.toString());
-    element.setAttribute('height', this.__height.toString());
+    const element = document.createElement('div');
+    element.setAttribute('mode', this.__mode ?? '');
     return { element };
   }
 
@@ -192,45 +102,16 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>
-        <ImageInsertionComponent
-          src={this.__src}
-          altText={this.__altText}
-          maxWidth={this.__maxWidth}
-          width={this.__width}
-          height={this.__height}
-          showCaption={this.__showCaption}
-          caption={this.__caption}
-          captionsEnabled={this.__captionsEnabled}
-        />
+        <ImageInsertionComponent mode={this.__mode} nodeKey={this.getKey()} />
       </Suspense>
     );
   }
 }
 
 export function $createImageInsertionNode({
-  altText,
-  height,
-  maxWidth = 500,
-  captionsEnabled,
-  src,
-  width,
-  showCaption,
-  caption,
-  key,
+  mode,
 }: ImageInsertionPayload): ImageInsertionNode {
-  return $applyNodeReplacement(
-    new ImageInsertionNode(
-      src,
-      altText,
-      maxWidth,
-      width,
-      height,
-      showCaption,
-      caption,
-      captionsEnabled,
-      key
-    )
-  );
+  return $applyNodeReplacement(new ImageInsertionNode(mode));
 }
 
 export function $isImageInsertionNode(
@@ -242,8 +123,8 @@ export function $isImageInsertionNode(
 function $convertImageInsertionElement(
   domNode: Node
 ): null | DOMConversionOutput {
-  const img = domNode as HTMLImageElement;
-  const { alt: altText, src, width, height } = img;
-  const node = $createImageInsertionNode({ altText, height, src, width });
+  const div = domNode as HTMLDivElement;
+  const mode = div.getAttribute('mode') as ImageInsertionType;
+  const node = $createImageInsertionNode({ mode });
   return { node };
 }

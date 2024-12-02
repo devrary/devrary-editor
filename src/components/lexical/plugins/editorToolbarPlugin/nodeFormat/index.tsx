@@ -31,6 +31,7 @@ import {
   TextNode,
 } from 'lexical';
 import { INSERT_PAGE_BREAK } from '@/components/lexical/plugins/pageBreakPlugin';
+import { INSERT_IMAGE_INSERTION_COMMAND } from '../../imageInsertionPlugin';
 
 const cx = classNames.bind(styles);
 
@@ -192,7 +193,15 @@ const NodeFormat = ({ direction }: Props) => {
             {getIcon('advancedcode')}
             <span className={cx('item-text')}>Advanced Code</span>
           </button>
-          <button className={cx('list-item')}>
+          <button
+            className={cx('list-item')}
+            onClick={() => {
+              editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
+                mode: null,
+              });
+              setOpen(false);
+            }}
+          >
             {getIcon('image')}
             <span className={cx('item-text')}>Image</span>
           </button>

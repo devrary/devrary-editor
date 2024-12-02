@@ -11,12 +11,14 @@ import {
   $createPageBreakNode,
   PageBreakNode,
 } from '@/components/lexical/nodes/pageBreakNode';
+import { useLexicalModal } from '@/states/lexical/lexicalModal/LexicalModalProvider';
 
 const ShortCutKeyPlugin = () => {
   const [editor] = useLexicalComposerContext();
+  const { addModal, removeModal } = useLexicalModal();
 
   useEffect(() => {
-    editor.registerTextContentListener((text: string) => {
+    editor.registerTextContentListener(() => {
       editor.update(() => {
         const selection = $getSelection();
         if (!$isRangeSelection(selection)) {
@@ -45,8 +47,23 @@ const ShortCutKeyPlugin = () => {
               textNode.select();
             }
           }
-          if (text.slice(-1) === '/') {
-            console.log('slash key pressed');
+
+          if (shorcut.slice(-1) === '/') {
+            const anchor = selection.anchor.getNode();
+            const key = anchor.getKey();
+            const domRange = key
+              ? editor.getElementByKey(key)?.getBoundingClientRect()
+              : null;
+            if (domRange) {
+              addModal({
+                key: 'tool-aggregation',
+                params: {
+                  position: { x: domRange.width, y: domRange.y },
+                },
+              });
+            }
+          } else {
+            removeModal('tool-aggregation');
           }
         }
       });

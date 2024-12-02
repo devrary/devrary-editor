@@ -42,6 +42,9 @@ import MultiLinkDisplayPlugin from '@/components/lexical/plugins/multiLinkDispla
 import HorizontalRulePlugin from '@/components/lexical/plugins/horizontalRulePlugin';
 import '@/components/lexical/theme/LexicalTheme.scss';
 import ShortCutKeyPlugin from '@/components/lexical/plugins/shortcutKeyPlugin';
+import ImageInsertionPlugin from '@/components/lexical/plugins/imageInsertionPlugin';
+import LexicalModalProvider from '@/states/lexical/lexicalModal/LexicalModalProvider';
+import ModalPlugin from '@/components/lexical/plugins/modalPlugin';
 
 const cx = classNames.bind(styles);
 
@@ -79,49 +82,53 @@ const EditorInput = () => {
         <div className={cx('editor-input')}>
           <LexicalComposer initialConfig={initialConfig}>
             <LexicalHistoryProvider>
-              <div className={cx('editor')}>
-                <div className={cx('toolbar')}>
-                  <EditorToolbarPlugin
-                    setIsLinkEditMode={setIsLinkEditMode}
-                    showToolbar={showToolbar}
-                  />
+              <LexicalModalProvider>
+                <div className={cx('editor')}>
+                  <div className={cx('toolbar')}>
+                    <EditorToolbarPlugin
+                      setIsLinkEditMode={setIsLinkEditMode}
+                      showToolbar={showToolbar}
+                    />
+                  </div>
+                  <EditorRichTextPlugin />
+                  <AutoFocusPlugin />
+                  <PastePlugin />
+                  <LinkPlugin />
+                  <CheckListPlugin />
+                  <ClearEditorPlugin />
+                  <AutoLinkPlugin />
+                  <HorizontalRulePlugin />
+                  <ListPlugin />
+                  <DragDropPastePlugin />
+                  <ImagePlugin />
+                  <InlineImagePlugin />
+                  <KeywordsPlugin />
+                  <HistoryPlugin />
+                  <HashtagPlugin />
+                  <LayoutPlugin />
+                  <PageBreakPlugin />
+                  <ShareStateSenderPlugin />
+                  <PollPlugin />
+                  <StickyPlugin />
+                  <MentionPlugin />
+                  <EmojiListPlugin />
+                  <EmojiPickerPlugin />
+                  <ExcalidrawPlugin />
+                  <EquationsPlugin />
+                  {/* <AutocompletePlugin /> */}
+                  <TwitterPlugin />
+                  <YouTubePlugin />
+                  <FigmaPlugin />
+                  <CollapsiblePlugin />
+                  <MarkdownPlugin />
+                  <AutoEmbedPlugin />
+                  <MultiLinkDisplayPlugin />
+                  <ShortCutKeyPlugin />
+                  <ImageInsertionPlugin />
+                  <ModalPlugin />
+                  <ViewerPlugin />
                 </div>
-                <EditorRichTextPlugin />
-                <AutoFocusPlugin />
-                <PastePlugin />
-                <LinkPlugin />
-                <CheckListPlugin />
-                <ClearEditorPlugin />
-                <AutoLinkPlugin />
-                <HorizontalRulePlugin />
-                <ListPlugin />
-                <DragDropPastePlugin />
-                <ImagePlugin />
-                <InlineImagePlugin />
-                <KeywordsPlugin />
-                <HistoryPlugin />
-                <HashtagPlugin />
-                <LayoutPlugin />
-                <PageBreakPlugin />
-                <ShareStateSenderPlugin />
-                <PollPlugin />
-                <StickyPlugin />
-                <MentionPlugin />
-                <EmojiListPlugin />
-                <EmojiPickerPlugin />
-                <ExcalidrawPlugin />
-                <EquationsPlugin />
-                {/* <AutocompletePlugin /> */}
-                <TwitterPlugin />
-                <YouTubePlugin />
-                <FigmaPlugin />
-                <CollapsiblePlugin />
-                <MarkdownPlugin />
-                <AutoEmbedPlugin />
-                <MultiLinkDisplayPlugin />
-                <ShortCutKeyPlugin />
-                <ViewerPlugin />
-              </div>
+              </LexicalModalProvider>
             </LexicalHistoryProvider>
           </LexicalComposer>
         </div>

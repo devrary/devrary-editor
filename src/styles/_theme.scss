@@ -1,6 +1,6 @@
-@use "@/styles/_color.scss" as *;
+@use '@/styles/_color.scss' as *;
 
-html[data-theme="light"] {
+html[data-theme='light'] {
   --ACHROMATIC: #{$LIGHT};
   --ACHROMATIC-REVERSE: #{$DARK};
   --ACHROMATIC-OPACITY-1: #{$LIGHT-OPACITY-1};
@@ -42,7 +42,7 @@ html[data-theme="light"] {
   --GRAY-9: #{$LIGHT-GRAY-1};
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   --BACKGROUND-1: #{$DARK-GRAY-1};
   --BACKGROUND-2: #{$DARK-GRAY-2};
   --ACHROMATIC: #{$DARK};
@@ -75,4 +75,13 @@ html[data-theme="dark"] {
   --BASE-BLUE-1-OPACITY-7: #{$BASE-BLUE-1-OPACITY-7};
   --BASE-BLUE-1-OPACITY-8: #{$BASE-BLUE-1-OPACITY-8};
   --BASE-BLUE-1-OPACITY-9: #{$BASE-BLUE-1-OPACITY-9};
+  --GRAY-1: #{$DARK-GRAY-1};
+  --GRAY-2: #{$DARK-GRAY-2};
+  --GRAY-3: #{$DARK-GRAY-3};
+  --GRAY-4: #{$DARK-GRAY-4};
+  --GRAY-5: #{$DARK-GRAY-5};
+  --GRAY-6: #{$BASE-GRAY-1};
+  --GRAY-7: #{$BASE-GRAY-2};
+  --GRAY-8: #{$BASE-GRAY-3};
+  --GRAY-9: #{$LIGHT-GRAY-1};
 }
