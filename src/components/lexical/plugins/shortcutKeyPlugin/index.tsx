@@ -12,6 +12,7 @@ import {
   PageBreakNode,
 } from '@/components/lexical/nodes/pageBreakNode';
 import { useLexicalModal } from '@/states/lexical/lexicalModal/LexicalModalProvider';
+import { INSERT_IMAGE_INSERTION_COMMAND } from '@/components/lexical/plugins/imageInsertionPlugin';
 
 const ShortCutKeyPlugin = () => {
   const [editor] = useLexicalComposerContext();
@@ -24,8 +25,46 @@ const ShortCutKeyPlugin = () => {
         if (!$isRangeSelection(selection)) {
           return false;
         } else {
-          const shorcut = selection.anchor.getNode().getTextContent();
-          if (shorcut === '>>>') {
+          const shortcut = selection.anchor.getNode().getTextContent();
+          if (shortcut === '>> image-insertion-file') {
+            const anchor = selection.anchor.getNode();
+            if (anchor instanceof TextNode) {
+              anchor.remove();
+            }
+            editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
+              mode: 'file',
+            });
+          } else if (shortcut === '>> image-insertion-url') {
+            const anchor = selection.anchor.getNode();
+            if (anchor instanceof TextNode) {
+              anchor.remove();
+            }
+            editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
+              mode: 'url',
+            });
+          } else if (shortcut === '>> image-insertion-none') {
+            const anchor = selection.anchor.getNode();
+            if (anchor instanceof TextNode) {
+              anchor.remove();
+            }
+            editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
+              mode: null,
+            });
+          }
+        }
+      });
+    });
+  }, [editor]);
+
+  useEffect(() => {
+    editor.registerTextContentListener(() => {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) {
+          return false;
+        } else {
+          const shortcut = selection.anchor.getNode().getTextContent();
+          if (shortcut === '>>>') {
             const anchor = selection.anchor.getNode();
             if (anchor instanceof TextNode) {
               anchor.remove();
@@ -48,7 +87,7 @@ const ShortCutKeyPlugin = () => {
             }
           }
 
-          if (shorcut.slice(-1) === '/') {
+          if (shortcut.slice(-1) === '/') {
             const anchor = selection.anchor.getNode();
             const key = anchor.getKey();
             const domRange = key

@@ -18,6 +18,10 @@ type Props = {
 
 const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
   const [type, setType] = useState<ImageInsertionType>(mode);
+  const [imageSource, setImageSource] = useState<
+    string | ArrayBuffer | Blob | null
+  >(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [kb, setKb] = useState<number>(0);
@@ -47,8 +51,32 @@ const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
         {type === 'file' && (
           <div className={'file-wrapper'}>
             <label htmlFor="file-input">
-              <div>파일 추가</div>
-              <input id="file-input" type="file" className={cx('file-input')} />
+              <div>Upload from device </div>
+              <input
+                id="file-input"
+                type="file"
+                accept="image/*"
+                className={cx('file-input')}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                      const image = new Image();
+                      image.src = reader.result as string;
+                      image.onload = () => {
+                        setWidth(image.width);
+                        setHeight(image.height);
+                        setKb(Math.round(file.size / 1024));
+                        setImageFile(file);
+                        setImageSource(reader.result);
+                      };
+                    };
+                  }
+                  console.log(event);
+                }}
+              />
             </label>
           </div>
         )}
@@ -65,9 +93,9 @@ const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
       </div>
       <div className={cx('wrapper-right')}>
         <div className={cx('image-info-wrapper')}>
-          <span className={cx('image-info-text')}>Width: {width}</span>
-          <span className={cx('image-info-text')}>Height: {height}</span>
-          <span className={cx('image-info-text')}>KB: {kb}</span>
+          <span className={cx('image-info-text')}>Width: {width}px</span>
+          <span className={cx('image-info-text')}>Height: {height}px</span>
+          <span className={cx('image-info-text')}>Size: {kb}KB</span>
         </div>
         <div className={cx('button-wrapper')}>
           <button className={cx('ctrl-button')} onClick={() => {}}>
