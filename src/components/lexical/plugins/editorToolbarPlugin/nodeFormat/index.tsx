@@ -26,12 +26,14 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $createHorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import {
   $createTextNode,
+  $getRoot,
   $getSelection,
   $isRangeSelection,
   TextNode,
 } from 'lexical';
 import { INSERT_PAGE_BREAK } from '@/components/lexical/plugins/pageBreakPlugin';
 import { INSERT_IMAGE_INSERTION_COMMAND } from '../../imageInsertionPlugin';
+import { ImageNode } from '@/components/lexical/nodes/imageNode';
 
 const cx = classNames.bind(styles);
 
@@ -196,9 +198,13 @@ const NodeFormat = ({ direction }: Props) => {
           <button
             className={cx('list-item')}
             onClick={() => {
-              editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
-                mode: null,
+              editor.update(() => {
+                editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
+                  mode: null,
+                  status: false,
+                });
               });
+
               setOpen(false);
             }}
           >

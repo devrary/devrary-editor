@@ -8,6 +8,8 @@ import ImportIcon from '@/public/icon/import.svg';
 import PreviewIcon from '@/public/icon/preview.svg';
 import TrashIcon from '@/public/icon/trash.svg';
 import CheckIcon from '@/public/icon/check.svg';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND } from '../../plugins/imageInsertionPlugin';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +19,7 @@ type Props = {
 };
 
 const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
+  const [editor] = useLexicalComposerContext();
   const [type, setType] = useState<ImageInsertionType>(mode);
   const [imageSource, setImageSource] = useState<
     string | ArrayBuffer | Blob | null
@@ -25,6 +28,7 @@ const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [kb, setKb] = useState<number>(0);
+  const [caption, setCaption] = useState<string>('');
 
   return (
     <div className={cx('image-insertion-container')}>
@@ -104,7 +108,25 @@ const ImageInsertionComponent = ({ mode, nodeKey }: Props) => {
           <button className={cx('ctrl-button')} onClick={() => {}}>
             <TrashIcon viewBox="0 0 16 16" className={cx('preview-icon')} />
           </button>
-          <button className={cx('ctrl-button')} onClick={() => {}}>
+          <button
+            className={cx('ctrl-button')}
+            onClick={() => {
+              console.log('insert image');
+              editor.update(() => {
+                editor.dispatchCommand(
+                  CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND,
+                  {
+                    altText: caption,
+                    height: height,
+                    width: width,
+                    src: imageSource as string,
+                    maxWidth: width,
+                    showCaption: caption !== '',
+                  }
+                );
+              });
+            }}
+          >
             <CheckIcon viewBox="0 0 24 24" className={cx('check-icon')} />
           </button>
         </div>

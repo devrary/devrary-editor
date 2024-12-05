@@ -22,21 +22,25 @@ export type ImageInsertionType = 'file' | 'url' | null;
 
 export interface ImageInsertionPayload {
   mode: ImageInsertionType;
+  status: boolean;
 }
 
 export type SerializedImageInsertionNode = Spread<
   {
     mode: ImageInsertionType;
+    status: boolean;
   },
   SerializedLexicalNode
 >;
 
 export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   __mode: ImageInsertionType;
+  __status: boolean;
 
-  constructor(mode: ImageInsertionType, key?: NodeKey) {
+  constructor(mode: ImageInsertionType, status: boolean, key?: NodeKey) {
     super(key);
     this.__mode = mode;
+    this.__status = status;
   }
 
   static getType(): string {
@@ -44,7 +48,11 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: ImageInsertionNode): ImageInsertionNode {
-    return new ImageInsertionNode(node.__mode, node.getKey());
+    return new ImageInsertionNode(node.__mode, node.__status, node.getKey());
+  }
+
+  static canBeEmpty() {
+    return true;
   }
 
   exportJSON(): SerializedImageInsertionNode {
@@ -52,6 +60,7 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
       type: 'image-insertion',
       version: 1,
       mode: this.__mode,
+      status: this.__status,
     };
   }
 
@@ -76,9 +85,10 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   static importJSON(
     serializedNode: SerializedImageInsertionNode
   ): ImageInsertionNode {
-    const { mode } = serializedNode;
+    const { mode, status } = serializedNode;
     const node = $createImageInsertionNode({
       mode,
+      status,
     });
 
     return node;
@@ -110,8 +120,9 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
 
 export function $createImageInsertionNode({
   mode,
+  status,
 }: ImageInsertionPayload): ImageInsertionNode {
-  return $applyNodeReplacement(new ImageInsertionNode(mode));
+  return $applyNodeReplacement(new ImageInsertionNode(mode, status));
 }
 
 export function $isImageInsertionNode(
@@ -125,6 +136,10 @@ function $convertImageInsertionElement(
 ): null | DOMConversionOutput {
   const div = domNode as HTMLDivElement;
   const mode = div.getAttribute('mode') as ImageInsertionType;
-  const node = $createImageInsertionNode({ mode });
+  const status = div.getAttribute('status') as string;
+  const node = $createImageInsertionNode({
+    mode,
+    status: Boolean(status),
+  });
   return { node };
 }

@@ -6,6 +6,8 @@ import {
   $createTextNode,
   TextNode,
   $getRoot,
+  KEY_ENTER_COMMAND,
+  COMMAND_PRIORITY_CRITICAL,
 } from 'lexical';
 import {
   $createPageBreakNode,
@@ -19,8 +21,9 @@ const ShortCutKeyPlugin = () => {
   const { addModal, removeModal } = useLexicalModal();
 
   useEffect(() => {
-    editor.registerTextContentListener(() => {
-      editor.update(() => {
+    editor.registerCommand(
+      KEY_ENTER_COMMAND,
+      (event) => {
         const selection = $getSelection();
         if (!$isRangeSelection(selection)) {
           return false;
@@ -33,7 +36,10 @@ const ShortCutKeyPlugin = () => {
             }
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: 'file',
+              status: false,
             });
+            event?.preventDefault();
+            return true;
           } else if (shortcut === '>> image-insertion-url') {
             const anchor = selection.anchor.getNode();
             if (anchor instanceof TextNode) {
@@ -41,19 +47,27 @@ const ShortCutKeyPlugin = () => {
             }
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: 'url',
+              status: false,
             });
-          } else if (shortcut === '>> image-insertion-none') {
+            event?.preventDefault();
+            return true;
+          } else if (shortcut === '>> image-insertion') {
             const anchor = selection.anchor.getNode();
             if (anchor instanceof TextNode) {
               anchor.remove();
             }
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: null,
+              status: false,
             });
+            event?.preventDefault();
+            return true;
           }
+          return false;
         }
-      });
-    });
+      },
+      COMMAND_PRIORITY_CRITICAL
+    );
   }, [editor]);
 
   useEffect(() => {
