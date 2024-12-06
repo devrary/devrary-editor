@@ -7,6 +7,8 @@ import {
   $getRoot,
   COMMAND_PRIORITY_EDITOR,
   ParagraphNode,
+  $getSelection,
+  $isRangeSelection,
 } from 'lexical';
 import {
   $createImageInsertionNode,
@@ -23,8 +25,11 @@ import {
 export const INSERT_IMAGE_INSERTION_COMMAND: LexicalCommand<ImageInsertionPayload> =
   createCommand('INSERT_IMAGE_INSERTION_COMMAND');
 
-export const CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND: LexicalCommand<ImagePayload> =
-  createCommand('CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND');
+export const CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND: LexicalCommand<
+  ImagePayload & {
+    id: string;
+  }
+> = createCommand('CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND');
 
 const ImageInsertionPlugin = () => {
   const [editor] = useLexicalComposerContext();
@@ -44,13 +49,12 @@ const ImageInsertionPlugin = () => {
             if (
               node instanceof ImageInsertionNode &&
               node.getType() === 'image-insertion' &&
-              node.__status === true
+              node.__id === payload.id
             ) {
-              node.remove();
+              const imageNode = $createImageNode(payload);
+              node.replace(imageNode);
             }
           });
-          const imageNode = $createImageNode(payload);
-          $insertNodes([imageNode]);
           return true;
         },
         COMMAND_PRIORITY_EDITOR
@@ -68,9 +72,15 @@ const ImageInsertionPlugin = () => {
       editor.registerCommand<ImageInsertionPayload>(
         INSERT_IMAGE_INSERTION_COMMAND,
         (payload) => {
+          const selection = $getSelection();
+          if (!$isRangeSelection(selection)) return false;
+          const parent = selection.anchor.getNode().getParent();
           const imageInsertionNode = $createImageInsertionNode(payload);
-          const root = $getRoot();
-          root.append(imageInsertionNode);
+          parent?.append(imageInsertionNode);
+          selection.anchor.getNode().remove();
+          const paragraphNode = new ParagraphNode();
+          parent?.append(paragraphNode);
+          paragraphNode.select();
           return true;
         },
         COMMAND_PRIORITY_EDITOR

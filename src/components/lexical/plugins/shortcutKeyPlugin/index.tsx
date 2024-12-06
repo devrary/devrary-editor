@@ -37,6 +37,7 @@ const ShortCutKeyPlugin = () => {
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: 'file',
               status: false,
+              id: Date.now().toString(),
             });
             event?.preventDefault();
             return true;
@@ -48,6 +49,7 @@ const ShortCutKeyPlugin = () => {
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: 'url',
               status: false,
+              id: Date.now().toString(),
             });
             event?.preventDefault();
             return true;
@@ -59,6 +61,7 @@ const ShortCutKeyPlugin = () => {
             editor.dispatchCommand(INSERT_IMAGE_INSERTION_COMMAND, {
               mode: null,
               status: false,
+              id: Date.now().toString(),
             });
             event?.preventDefault();
             return true;

@@ -23,12 +23,14 @@ export type ImageInsertionType = 'file' | 'url' | null;
 export interface ImageInsertionPayload {
   mode: ImageInsertionType;
   status: boolean;
+  id: string;
 }
 
 export type SerializedImageInsertionNode = Spread<
   {
     mode: ImageInsertionType;
     status: boolean;
+    id: string;
   },
   SerializedLexicalNode
 >;
@@ -36,11 +38,18 @@ export type SerializedImageInsertionNode = Spread<
 export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   __mode: ImageInsertionType;
   __status: boolean;
+  __id: string;
 
-  constructor(mode: ImageInsertionType, status: boolean, key?: NodeKey) {
+  constructor(
+    mode: ImageInsertionType,
+    status: boolean,
+    id: string,
+    key?: NodeKey
+  ) {
     super(key);
     this.__mode = mode;
     this.__status = status;
+    this.__id = id;
   }
 
   static getType(): string {
@@ -48,7 +57,12 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: ImageInsertionNode): ImageInsertionNode {
-    return new ImageInsertionNode(node.__mode, node.__status, node.getKey());
+    return new ImageInsertionNode(
+      node.__mode,
+      node.__status,
+      node.__id,
+      node.getKey()
+    );
   }
 
   static canBeEmpty() {
@@ -61,6 +75,7 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
       version: 1,
       mode: this.__mode,
       status: this.__status,
+      id: this.__id,
     };
   }
 
@@ -85,10 +100,11 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   static importJSON(
     serializedNode: SerializedImageInsertionNode
   ): ImageInsertionNode {
-    const { mode, status } = serializedNode;
+    const { id, mode, status } = serializedNode;
     const node = $createImageInsertionNode({
       mode,
       status,
+      id,
     });
 
     return node;
@@ -112,7 +128,11 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
   decorate(): JSX.Element {
     return (
       <Suspense fallback={null}>
-        <ImageInsertionComponent mode={this.__mode} nodeKey={this.getKey()} />
+        <ImageInsertionComponent
+          id={this.__id}
+          mode={this.__mode}
+          nodeKey={this.getKey()}
+        />
       </Suspense>
     );
   }
@@ -121,8 +141,9 @@ export class ImageInsertionNode extends DecoratorNode<JSX.Element> {
 export function $createImageInsertionNode({
   mode,
   status,
+  id,
 }: ImageInsertionPayload): ImageInsertionNode {
-  return $applyNodeReplacement(new ImageInsertionNode(mode, status));
+  return $applyNodeReplacement(new ImageInsertionNode(mode, status, id));
 }
 
 export function $isImageInsertionNode(
@@ -137,9 +158,11 @@ function $convertImageInsertionElement(
   const div = domNode as HTMLDivElement;
   const mode = div.getAttribute('mode') as ImageInsertionType;
   const status = div.getAttribute('status') as string;
+  const id = div.getAttribute('id') as string;
   const node = $createImageInsertionNode({
     mode,
     status: Boolean(status),
+    id,
   });
   return { node };
 }

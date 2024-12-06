@@ -1,6 +1,6 @@
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import React, { useEffect } from "react";
-import { useLexicalStateShare } from "@/states/lexical/lexicalShareState/LexicalShareStateContext";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useEffect } from 'react';
+import { useLexicalStateShare } from '@/states/lexical/lexicalShareState/LexicalShareStateContext';
 
 const ShareStateReceiverPlugin = () => {
   const { stateStr } = useLexicalStateShare();
@@ -8,8 +8,8 @@ const ShareStateReceiverPlugin = () => {
 
   useEffect(() => {
     console.log(
-      "ShareStateReceiverPlugin: stateStr",
-      JSON.parse(stateStr ?? "{}")
+      'ShareStateReceiverPlugin: stateStr',
+      JSON.parse(stateStr ?? '{}')
     );
 
     if (stateStr) {
