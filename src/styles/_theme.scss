@@ -1,6 +1,9 @@
 @use '@/styles/_color.scss' as *;
 
 html[data-theme='light'] {
+  --BACKGROUND-1: #{$DARK-GRAY-1};
+  --BACKGROUND-2: #{$DARK-GRAY-2};
+  --BACKGROUND-3: #{$LIGHT-GRAY-2};
   --ACHROMATIC: #{$LIGHT};
   --ACHROMATIC-REVERSE: #{$DARK};
   --ACHROMATIC-OPACITY-1: #{$LIGHT-OPACITY-1};
@@ -45,6 +48,7 @@ html[data-theme='light'] {
 html[data-theme='dark'] {
   --BACKGROUND-1: #{$DARK-GRAY-1};
   --BACKGROUND-2: #{$DARK-GRAY-2};
+  --BACKGROUND-3: #{$LIGHT-GRAY-1};
   --ACHROMATIC: #{$DARK};
   --ACHROMATIC-REVERSE: #{$LIGHT};
   --ACHROMATIC-OPACITY-1: #{$DARK-OPACITY-1};

@@ -1,11 +1,16 @@
 .editor-input {
-  width: 100%;
+  width: 50%;
+  min-width: 64rem;
+  margin: 0 auto;
   height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   position: relative;
   overflow-y: scroll;
+  border-left: 1px solid var(--ACHROMATIC-REVERSE-OPACITY-1);
+  border-right: 1px solid var(--ACHROMATIC-REVERSE-OPACITY-1);
+  background-color: #3d3d3d;
 
   .editor {
     width: 100%;

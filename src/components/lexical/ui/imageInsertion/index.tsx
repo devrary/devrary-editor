@@ -8,7 +8,6 @@ import {
 } from '@/components/lexical/nodes/imageInsertionNode';
 import {
   $getRoot,
-  $getSelection,
   COMMAND_PRIORITY_CRITICAL,
   NodeKey,
   PASTE_COMMAND,
@@ -46,10 +45,26 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const onFocus = useCallback(() => {
     setIsSelected(true);
   }, [editor, isSelected, id]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+
+    const image = new Image();
+    image.src = imageSource as string;
+    image.onload = () => {
+      if (ctx) {
+        ctx?.drawImage(image, 0, 0);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+      }
+    };
+  }, [imageSource]);
 
   useEffect(() => {
     editor.registerUpdateListener(() => {
@@ -181,10 +196,6 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
                 <button
                   className={cx('url-button')}
                   onClick={async () => {
-                    editor.update(() => {
-                      const selection = $getSelection();
-                      console.log(selection);
-                    });
                     const data = await fetch(imageUrl as string, {
                       method: 'GET',
                     });
@@ -209,8 +220,12 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
               </div>
             )}
             {imageSource && imageFile && (
-              <div>
-                <img src={imageSource as string} alt={imageFile.name} />
+              <div className={cx('canvas-wrapper')}>
+                <canvas
+                  ref={canvasRef}
+                  style={{ width: '100%' }}
+                  className={cx('canvas')}
+                ></canvas>
               </div>
             )}
           </div>
