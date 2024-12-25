@@ -114,7 +114,7 @@ const ShortCutKeyPlugin = () => {
               addModal({
                 key: 'tool-aggregation',
                 params: {
-                  position: { x: domRange.width, y: domRange.y },
+                  position: { x: domRange.x, y: domRange.y },
                 },
               });
             }

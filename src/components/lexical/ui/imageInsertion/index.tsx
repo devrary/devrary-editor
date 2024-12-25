@@ -21,6 +21,8 @@ import ImageIcon from '@/public/icon/square-image.svg';
 import CloseIcon from '@/public/icon/close-x.svg';
 import { mergeRegister } from '@lexical/utils';
 import { useOnClick } from '@/shared/hooks/useOnClick';
+import { useImageEditor } from '@/shared/hooks/useImageEditor';
+import { ImageURLToFile } from '@excalidraw/excalidraw/types/data/blob';
 
 const cx = classNames.bind(styles);
 
@@ -45,26 +47,13 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { image, mouseDown, mouseMove, mouseUp, mouseWheel } = useImageEditor({
+    source: imageSource,
+  });
 
   const onFocus = useCallback(() => {
     setIsSelected(true);
   }, [editor, isSelected, id]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-
-    const image = new Image();
-    image.src = imageSource as string;
-    image.onload = () => {
-      if (ctx) {
-        ctx?.drawImage(image, 0, 0);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
-      }
-    };
-  }, [imageSource]);
 
   useEffect(() => {
     editor.registerUpdateListener(() => {
@@ -222,7 +211,11 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
             {imageSource && imageFile && (
               <div className={cx('canvas-wrapper')}>
                 <canvas
-                  ref={canvasRef}
+                  ref={image}
+                  onMouseDown={mouseDown}
+                  onMouseMove={mouseMove}
+                  onMouseUp={mouseUp}
+                  onWheel={mouseWheel}
                   style={{ width: '100%' }}
                   className={cx('canvas')}
                 ></canvas>
@@ -259,18 +252,20 @@ const ImageInsertionComponent = ({ id, mode }: Props) => {
                 className={cx('ctrl-button')}
                 onClick={() => {
                   editor.update(() => {
-                    editor.dispatchCommand(
-                      CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND,
-                      {
-                        altText: caption,
-                        height: height,
-                        width: width,
-                        src: imageSource as string,
-                        maxWidth: width,
-                        showCaption: caption !== '',
-                        id,
-                      }
-                    );
+                    if (image.current) {
+                      editor.dispatchCommand(
+                        CONVERT_IMAGE_INSERTION_TO_IMAGE_COMMAND,
+                        {
+                          altText: caption,
+                          height: (width / 4) * 3,
+                          width: width,
+                          src: image.current.toDataURL('image/png'),
+                          maxWidth: width,
+                          showCaption: caption !== '',
+                          id,
+                        }
+                      );
+                    }
                   });
                 }}
               >

@@ -1,8 +1,8 @@
-import type { LexicalEditor } from "lexical";
-import { calculateZoomLevel } from "@lexical/utils";
-import { useRef } from "react";
-import styles from "@/components/lexical/ui/imageResizer/ImageResizer.module.scss";
-import classNames from "classnames/bind";
+import type { LexicalEditor } from 'lexical';
+import { calculateZoomLevel } from '@lexical/utils';
+import { useRef } from 'react';
+import styles from '@/components/lexical/ui/imageResizer/ImageResizer.module.scss';
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +22,7 @@ type Props = {
   buttonRef: { current: null | HTMLButtonElement };
   imageRef: { current: null | HTMLElement };
   maxWidth?: number;
-  onResizeEnd: (width: "inherit" | number, height: "inherit" | number) => void;
+  onResizeEnd: (width: 'inherit' | number, height: 'inherit' | number) => void;
   onResizeStart: () => void;
   setShowCaption: (show: boolean) => void;
   showCaption: boolean;
@@ -42,12 +42,12 @@ const ImageResizer = ({
 }: Props) => {
   const controlWrapperRef = useRef<HTMLDivElement>(null);
   const userSelect = useRef({
-    priority: "",
-    value: "default",
+    priority: '',
+    value: 'default',
   });
   const positioningRef = useRef<{
-    currentHeight: "inherit" | number;
-    currentWidth: "inherit" | number;
+    currentHeight: 'inherit' | number;
+    currentWidth: 'inherit' | number;
     direction: number;
     isResizing: boolean;
     ratio: number;
@@ -88,43 +88,43 @@ const ImageResizer = ({
       (direction & Direction.north && direction & Direction.west) ||
       (direction & Direction.south && direction & Direction.east);
 
-    const cursorDir = ew ? "ew" : ns ? "ns" : nwse ? "nwse" : "nesw";
+    const cursorDir = ew ? 'ew' : ns ? 'ns' : nwse ? 'nwse' : 'nesw';
 
     if (editorRootElement !== null) {
       editorRootElement.style.setProperty(
-        "cursor",
+        'cursor',
         `${cursorDir}-resize`,
-        "important"
+        'important'
       );
     }
     if (document.body !== null) {
       document.body.style.setProperty(
-        "cursor",
+        'cursor',
         `${cursorDir}-resize`,
-        "important"
+        'important'
       );
       userSelect.current.value = document.body.style.getPropertyValue(
-        "-webkit-user-select"
+        '-webkit-user-select'
       );
       userSelect.current.priority = document.body.style.getPropertyPriority(
-        "-webkit-user-select"
+        '-webkit-user-select'
       );
       document.body.style.setProperty(
-        "-webkit-user-select",
+        '-webkit-user-select',
         `none`,
-        "important"
+        'important'
       );
     }
   };
 
   const setEndCursor = () => {
     if (editorRootElement !== null) {
-      editorRootElement.style.setProperty("cursor", "text");
+      editorRootElement.style.setProperty('cursor', 'text');
     }
     if (document.body !== null) {
-      document.body.style.setProperty("cursor", "default");
+      document.body.style.setProperty('cursor', 'default');
       document.body.style.setProperty(
-        "-webkit-user-select",
+        '-webkit-user-select',
         userSelect.current.value,
         userSelect.current.priority
       );
@@ -160,12 +160,12 @@ const ImageResizer = ({
       setStartCursor(direction);
       onResizeStart();
 
-      controlWrapper.classList.add("image-control-wrapper--resizing");
+      controlWrapper.classList.add('image-control-wrapper--resizing');
       image.style.height = `${height}px`;
       image.style.width = `${width}px`;
 
-      document.addEventListener("pointermove", handlePointerMove);
-      document.addEventListener("pointerup", handlePointerUp);
+      document.addEventListener('pointermove', handlePointerMove);
+      document.addEventListener('pointerup', handlePointerUp);
     }
   };
   const handlePointerMove = (event: PointerEvent) => {
@@ -238,19 +238,19 @@ const ImageResizer = ({
       positioning.currentHeight = 0;
       positioning.isResizing = false;
 
-      controlWrapper.classList.remove("image-control-wrapper--resizing");
+      controlWrapper.classList.remove('image-control-wrapper--resizing');
 
       setEndCursor();
       onResizeEnd(width, height);
 
-      document.removeEventListener("pointermove", handlePointerMove);
-      document.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', handlePointerUp);
     }
   };
 
   return (
     <div ref={controlWrapperRef}>
-      {!showCaption && captionsEnabled && (
+      {/* {!showCaption && captionsEnabled && (
         <button
           className={cx("image-caption-button")}
           ref={buttonRef}
@@ -260,51 +260,51 @@ const ImageResizer = ({
         >
           Add Caption
         </button>
-      )}
+      )} */}
       <div
-        className={cx("image-resizer", "image-resizer-n")}
+        className={cx('image-resizer', 'image-resizer-n')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-ne")}
+        className={cx('image-resizer', 'image-resizer-ne')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.east);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-e")}
+        className={cx('image-resizer', 'image-resizer-e')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.east);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-se")}
+        className={cx('image-resizer', 'image-resizer-se')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.east);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-s")}
+        className={cx('image-resizer', 'image-resizer-s')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-sw")}
+        className={cx('image-resizer', 'image-resizer-sw')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.west);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-w")}
+        className={cx('image-resizer', 'image-resizer-w')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.west);
         }}
       />
       <div
-        className={cx("image-resizer", "image-resizer-nw")}
+        className={cx('image-resizer', 'image-resizer-nw')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.west);
         }}

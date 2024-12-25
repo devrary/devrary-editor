@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '@/components/lexical/ui/modal/lexicalToolModal/LexicalToolModal.module.scss';
 import classNames from 'classnames/bind';
 import { ToolAggregationModalParam } from '@/states/lexical/lexicalModal/LexicalModalContext';
-import { mergeRegister } from '@lexical/utils';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   KEY_ARROW_UP_COMMAND,
