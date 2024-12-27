@@ -222,6 +222,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
           caption={this.__caption}
           captionsEnabled={this.__captionsEnabled}
           resizable={true}
+          node={this}
         />
       </Suspense>
     );

@@ -22,6 +22,7 @@ import LinkIcon from '@/public/icon/link.svg';
 import HighlightIcon from '@/public/icon/highlight.svg';
 import ClearIcon from '@/public/icon/trash.svg';
 import MarkdownIcon from '@/public/icon/markdown.svg';
+import HideIcon from '@/public/icon/eye.svg';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   $createParagraphNode,
@@ -38,10 +39,13 @@ import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
 import { $isDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import useWindow from '@/shared/hooks/useWindow';
 import { Tooltip } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { SET_STATE } from '@/states/global/slice/editor';
 
 const cx = classNames.bind(styles);
 
 const InlineFormat = () => {
+  const dispatch = useDispatch();
   const { windowWidth, windowHeight } = useWindow();
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
     null
@@ -144,6 +148,8 @@ const InlineFormat = () => {
           return <LinkIcon viewBox="0 0 16 16" className={cx('icon')} />;
         case 'clear':
           return <ClearIcon viewBox="0 0 16 16" className={cx('clear')} />;
+        case 'hide':
+          return <HideIcon viewBox="0 0 24 24" className={cx('icon')} />;
       }
     },
     [inlineFormat]
@@ -309,11 +315,16 @@ const InlineFormat = () => {
           );
         }
       )}
+      <button className={cx('list-item')} onClick={clearFormatting}>
+        {getIcon('clear')}
+      </button>
       <button
         className={cx('list-item', { last: true })}
-        onClick={clearFormatting}
+        onClick={() =>
+          dispatch(SET_STATE({ type: 'showInputFormat', value: false }))
+        }
       >
-        {getIcon('clear')}
+        {getIcon('hide')}
       </button>
     </div>
   );

@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: cover;
+    fill: var(--ACHROMATIC-REVERSE-OPACITY-8);
+  }
+}

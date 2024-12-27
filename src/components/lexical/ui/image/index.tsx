@@ -45,7 +45,7 @@ import {
   useState,
 } from 'react';
 import { useLexicalHistory } from '@/states/lexical/lexicalHistory/LexicalHistoryProvider';
-import { $isImageNode } from '@/components/lexical/nodes/imageNode';
+import { $isImageNode, ImageNode } from '@/components/lexical/nodes/imageNode';
 import LexicalRichTextPlugin from '@/components/lexical/plugins/richTextPlugin';
 import LinkPlugin from '@/components/lexical/plugins/linkPlugin';
 import BrokenImage from '@/components/lexical/ui/image/BrokenImage';
@@ -53,6 +53,7 @@ import LazyImage from '@/components/lexical/ui/image/LazyImage';
 import ImageResizer from '@/components/lexical/ui/imageResizer';
 import styles from '@/components/lexical/ui/inlineImage/InlineImage.module.scss';
 import classNames from 'classnames/bind';
+import CloseIcon from '@/public/icon/close-x.svg';
 
 const cx = classNames.bind(styles);
 
@@ -70,6 +71,7 @@ type Props = {
   src: string;
   width: 'inherit' | number;
   captionsEnabled: boolean;
+  node: ImageNode;
 };
 
 const Image = ({
@@ -83,6 +85,7 @@ const Image = ({
   showCaption,
   caption,
   captionsEnabled,
+  node,
 }: Props) => {
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -325,7 +328,7 @@ const Image = ({
   return (
     <Suspense fallback={null}>
       <>
-        <div draggable={draggable}>
+        <div draggable={draggable} className={cx('image-container')}>
           {isLoadError ? (
             <BrokenImage />
           ) : (
@@ -344,6 +347,16 @@ const Image = ({
               onError={() => setIsLoadError(true)}
             />
           )}
+          <button
+            className={cx('clear-button-wrapper')}
+            onClick={() => {
+              editor.update(() => {
+                node.remove();
+              });
+            }}
+          >
+            <CloseIcon viewBox="0 0 24 24" className={cx('clear-icon')} />
+          </button>
         </div>
 
         {showCaption && (

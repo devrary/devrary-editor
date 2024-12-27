@@ -1,11 +1,13 @@
-"use client";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import theme from "@/states/global/slice/theme";
-import modal from "@/states/global/slice/modal";
+'use client';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import theme from '@/states/global/slice/theme';
+import modal from '@/states/global/slice/modal';
+import editor from '@/states/global/slice/editor';
 
 const rootReducer = combineReducers({
   theme,
   modal,
+  editor,
   // Add reducers here
 });
 
